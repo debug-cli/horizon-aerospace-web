@@ -553,6 +553,200 @@
     margin-top: 8px;
     font-size: 9px;
   }
+  /* ── LEADERSHIP ── */
+  .leadership-bar {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1rem 1.5rem;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    margin-bottom: 2.5rem;
+    border-radius: 2px;
+  }
+  .leadership-bar .role {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .leadership-bar .name {
+    font-family: 'Orbitron', monospace;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .leadership-bar .country {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--text2);
+    letter-spacing: 0.1em;
+    margin-left: auto;
+  }
+
+  /* ── CAREERS ── */
+  .jobs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 10px;
+    margin-bottom: 3rem;
+  }
+
+  .job-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 1.4rem;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+  }
+  .job-card:hover { border-color: var(--gold); background: rgba(245,200,0,0.03); }
+  .job-card.selected { border-color: var(--gold); background: rgba(245,200,0,0.06); }
+  .job-card.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 10px; right: 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--gold);
+  }
+
+  .job-dept {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--text3);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .job-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .job-desc {
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+  .job-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
+  .job-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    padding: 2px 7px;
+    background: rgba(245,200,0,0.07);
+    color: var(--gold);
+    border: 1px solid rgba(245,200,0,0.2);
+    border-radius: 2px;
+  }
+
+  .apply-form {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 2px;
+    padding: 2rem;
+  }
+
+  .apply-form-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.08em;
+  }
+
+  .apply-form-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .form-field { display: flex; flex-direction: column; gap: 5px; }
+  .form-field.full { grid-column: 1 / -1; }
+
+  .form-field label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .form-field input,
+  .form-field select,
+  .form-field textarea {
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    padding: 10px 12px;
+    border-radius: 2px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  .form-field input:focus,
+  .form-field select:focus,
+  .form-field textarea:focus { border-color: var(--gold); }
+
+  .form-field select option { background: var(--bg3); }
+
+  .form-field textarea { resize: vertical; min-height: 100px; }
+
+  .form-selected-role {
+    padding: 8px 12px;
+    background: rgba(245,200,0,0.07);
+    border: 1px solid rgba(245,200,0,0.25);
+    border-radius: 2px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    margin-bottom: 12px;
+    display: none;
+  }
+  .form-selected-role.visible { display: block; }
+
+  .submit-btn {
+    font-family: 'Orbitron', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--bg);
+    background: var(--gold);
+    border: none;
+    padding: 12px 2rem;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    margin-top: 4px;
+  }
+  .submit-btn:hover { background: #ffd740; transform: translateY(-1px); }
+
+  .form-notice {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+    margin-top: 10px;
+    line-height: 1.6;
+  }
 </style>
 </head>
 <body>
@@ -620,6 +814,7 @@
     <a href="#missions">MISSIONS</a>
     <a href="#values">VALUES</a>
     <a href="#roadmap">ROADMAP</a>
+    <a href="#careers" style="color:var(--gold);">CAREERS</a>
   </nav>
   <div class="header-status" style="color:var(--green);border-color:rgba(0,229,160,0.3);background:rgba(0,229,160,0.07);">✓ 2 MISSIONS COMPLETE</div>
 </header>
@@ -678,7 +873,7 @@
     </svg>
   </div>
 
-  <div class="hero-eyebrow">HORIZON AEROSPACE · KERBIN SPACE CENTER · EST. 2026</div>
+  <div class="hero-eyebrow">HORIZON AEROSPACE · REPUBLIC OF RETARDIA · EST. 2026</div>
   <h1 class="hero-title">SAFE. DELIBERATE.<br>TOGETHER.</h1>
   <p class="hero-sub">Horizon Aerospace is Kerbin's newest space agency — built from the ground up on the principles of safety, meticulous planning, and inter-agency cooperation. We don't launch for the sake of launching.</p>
 
@@ -707,6 +902,25 @@
       <div class="hero-stat-val">6</div>
       <div class="hero-stat-label">MISSIONS SCHEDULED</div>
     </div>
+  </div>
+
+  <!-- Leadership bar -->
+  <div class="leadership-bar" style="margin-top:2rem;">
+    <div>
+      <div class="role">Chief Executive Officer</div>
+      <div class="name">Kohen Westhoff</div>
+    </div>
+    <div style="width:1px;height:36px;background:var(--border);"></div>
+    <div>
+      <div class="role">Jurisdiction</div>
+      <div class="name" style="font-size:13px;color:var(--text);">Republic of Retardia</div>
+    </div>
+    <div style="width:1px;height:36px;background:var(--border);"></div>
+    <div>
+      <div class="role">Headquarters</div>
+      <div class="name" style="font-size:13px;color:var(--text);">Kerbin Space Center</div>
+    </div>
+    <div class="country">HORIZON AEROSPACE IS A GOVERNMENT-CHARTERED AGENCY<br>OF THE REPUBLIC OF RETARDIA</div>
   </div>
 </div>
 
@@ -1121,6 +1335,181 @@
   </div>
 </section>
 
+<!-- SECTION 05 · CAREERS -->
+<section class="section" id="careers">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2 class="section-title">CAREERS AT HORIZON</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:2rem;max-width:680px;">Horizon Aerospace is building the Republic of Retardia's spacefaring future — and we're looking for people who take that seriously. All positions are based at Kerbin Space Center. Applications are reviewed directly by leadership. Click a role to pre-fill your application.</p>
+
+  <div class="jobs-grid" id="jobsGrid">
+
+    <div class="job-card" onclick="selectJob(this, 'Mission Controller')" data-role="Mission Controller">
+      <div class="job-dept">Flight Operations</div>
+      <div class="job-title">Mission Controller</div>
+      <p class="job-desc">Monitor and manage live flight operations from Mission Control. Responsible for telemetry analysis, crew communications, and go/no-go decisions during active missions.</p>
+      <div class="job-tags">
+        <span class="job-tag">FULL-TIME</span>
+        <span class="job-tag">KSC ON-SITE</span>
+        <span class="job-tag">SHIFT WORK</span>
+      </div>
+    </div>
+
+    <div class="job-card" onclick="selectJob(this, 'Flight Director')" data-role="Flight Director">
+      <div class="job-dept">Flight Operations</div>
+      <div class="job-title">Flight Director</div>
+      <p class="job-desc">Senior oversight role for all crewed and uncrewed flights. Final authority in Mission Control during active operations. Must have prior mission controller experience.</p>
+      <div class="job-tags">
+        <span class="job-tag">FULL-TIME</span>
+        <span class="job-tag">KSC ON-SITE</span>
+        <span class="job-tag">SENIOR</span>
+      </div>
+    </div>
+
+    <div class="job-card" onclick="selectJob(this, 'Aerospace Engineer — Structures')" data-role="Aerospace Engineer — Structures">
+      <div class="job-dept">Engineering</div>
+      <div class="job-title">Aerospace Engineer — Structures</div>
+      <p class="job-desc">Design, analyse, and certify launch vehicle and spacecraft structural components. Work closely with the safety review board on pre-flight sign-off documentation.</p>
+      <div class="job-tags">
+        <span class="job-tag">FULL-TIME</span>
+        <span class="job-tag">KSC ON-SITE</span>
+        <span class="job-tag">ENGINEERING</span>
+      </div>
+    </div>
+
+    <div class="job-card" onclick="selectJob(this, 'Aerospace Engineer — Propulsion')" data-role="Aerospace Engineer — Propulsion">
+      <div class="job-dept">Engineering</div>
+      <div class="job-title">Aerospace Engineer — Propulsion</div>
+      <p class="job-desc">Development and testing of launch vehicle engines and in-space propulsion systems. Support for EcoStrat and Vanguard vehicle design and iterative improvement cycles.</p>
+      <div class="job-tags">
+        <span class="job-tag">FULL-TIME</span>
+        <span class="job-tag">KSC ON-SITE</span>
+        <span class="job-tag">ENGINEERING</span>
+      </div>
+    </div>
+
+    <div class="job-card" onclick="selectJob(this, 'Aerospace Engineer — Avionics')" data-role="Aerospace Engineer — Avionics">
+      <div class="job-dept">Engineering</div>
+      <div class="job-title">Aerospace Engineer — Avionics</div>
+      <p class="job-desc">Design and integration of flight computer, guidance, navigation, and control systems across all Horizon vehicles. Direct collaboration with Mission Control teams.</p>
+      <div class="job-tags">
+        <span class="job-tag">FULL-TIME</span>
+        <span class="job-tag">KSC ON-SITE</span>
+        <span class="job-tag">ENGINEERING</span>
+      </div>
+    </div>
+
+    <div class="job-card" onclick="selectJob(this, 'Safety Review Engineer')" data-role="Safety Review Engineer">
+      <div class="job-dept">Safety Review Board</div>
+      <div class="job-title">Safety Review Engineer</div>
+      <p class="job-desc">Independent review and audit of mission readiness documentation. Reports directly to the Safety Review Board — not the flight operations chain of command. Veto-capable role.</p>
+      <div class="job-tags">
+        <span class="job-tag">FULL-TIME</span>
+        <span class="job-tag">INDEPENDENT</span>
+        <span class="job-tag">SENIOR</span>
+      </div>
+    </div>
+
+    <div class="job-card" onclick="selectJob(this, 'Contractor — Launch Support')" data-role="Contractor — Launch Support">
+      <div class="job-dept">Contractor</div>
+      <div class="job-title">Contractor — Launch Support</div>
+      <p class="job-desc">Short-to-medium term contract roles supporting launch vehicle assembly, fuelling operations, and pad infrastructure. Contract length varies per mission campaign.</p>
+      <div class="job-tags">
+        <span class="job-tag">CONTRACT</span>
+        <span class="job-tag">KSC ON-SITE</span>
+        <span class="job-tag">TECHNICAL</span>
+      </div>
+    </div>
+
+    <div class="job-card" onclick="selectJob(this, 'Contractor — Ground Systems')" data-role="Contractor — Ground Systems">
+      <div class="job-dept">Contractor</div>
+      <div class="job-title">Contractor — Ground Systems</div>
+      <p class="job-desc">Infrastructure and IT contractor supporting ground tracking, telemetry relay, and KSC facility operations. Technical and non-technical positions available.</p>
+      <div class="job-tags">
+        <span class="job-tag">CONTRACT</span>
+        <span class="job-tag">KSC ON-SITE</span>
+        <span class="job-tag">INFRASTRUCTURE</span>
+      </div>
+    </div>
+
+    <div class="job-card" onclick="selectJob(this, 'Kerbonaut Candidate')" data-role="Kerbonaut Candidate">
+      <div class="job-dept">Flight Crew</div>
+      <div class="job-title">Kerbonaut Candidate</div>
+      <p class="job-desc">Applications for the next Horizon Kerbonaut class. Candidates must complete the full Horizon Safety Certification programme before mission assignment. All backgrounds considered.</p>
+      <div class="job-tags">
+        <span class="job-tag">FULL-TIME</span>
+        <span class="job-tag">CERTIFICATION REQ.</span>
+        <span class="job-tag">OPEN CALL</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Application form -->
+  <div class="apply-form">
+    <div class="apply-form-title">APPLICATION FORM</div>
+    <div class="apply-form-sub">APPLICATIONS REVIEWED BY CEO KOHEN WESTHOFF · HORIZON AEROSPACE · REPUBLIC OF RETARDIA</div>
+
+    <div class="form-selected-role" id="selectedRoleDisplay">◌ NO ROLE SELECTED — SELECT A POSITION ABOVE OR CHOOSE FROM THE DROPDOWN</div>
+
+    <div class="form-grid">
+      <div class="form-field">
+        <label>Full Name</label>
+        <input type="text" id="appName" placeholder="Your full name" />
+      </div>
+      <div class="form-field">
+        <label>Email Address</label>
+        <input type="email" id="appEmail" placeholder="your@email.com" />
+      </div>
+      <div class="form-field">
+        <label>Position Applying For</label>
+        <select id="appRole">
+          <option value="">— Select a role —</option>
+          <optgroup label="Flight Operations">
+            <option>Mission Controller</option>
+            <option>Flight Director</option>
+          </optgroup>
+          <optgroup label="Engineering">
+            <option>Aerospace Engineer — Structures</option>
+            <option>Aerospace Engineer — Propulsion</option>
+            <option>Aerospace Engineer — Avionics</option>
+          </optgroup>
+          <optgroup label="Safety Review Board">
+            <option>Safety Review Engineer</option>
+          </optgroup>
+          <optgroup label="Contractor">
+            <option>Contractor — Launch Support</option>
+            <option>Contractor — Ground Systems</option>
+          </optgroup>
+          <optgroup label="Flight Crew">
+            <option>Kerbonaut Candidate</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Years of Relevant Experience</label>
+        <select id="appExp">
+          <option value="">— Select —</option>
+          <option>0–1 years (Entry level)</option>
+          <option>2–4 years</option>
+          <option>5–9 years</option>
+          <option>10+ years (Senior)</option>
+        </select>
+      </div>
+      <div class="form-field full">
+        <label>Cover Letter / Why Horizon Aerospace?</label>
+        <textarea id="appCover" placeholder="Tell us why you want to work at Horizon Aerospace, what you'd bring to the team, and any relevant background. Be specific."></textarea>
+      </div>
+    </div>
+
+    <button class="submit-btn" onclick="submitApplication()">SUBMIT APPLICATION →</button>
+    <p class="form-notice">Applications are sent directly to CEO Kohen Westhoff at Horizon Aerospace HQ, Kerbin Space Center, Republic of Retardia.<br>You will be contacted at the email address provided if your application is progressed.</p>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-emblem">
@@ -1152,10 +1541,82 @@
     </svg>
   </div>
   <div class="footer-logo">HORIZON AEROSPACE</div>
-  <div class="footer-text">EST. 2026 · KERBIN SPACE CENTER</div>
-  <div class="footer-text">SAFE · DELIBERATE · TOGETHER · PER ASPERA AD ASTRA</div>
+  <div class="footer-text">EST. 2026 · KERBIN SPACE CENTER · REPUBLIC OF RETARDIA</div>
+  <div class="footer-text">CEO: KOHEN WESTHOFF &nbsp;·&nbsp; SAFE · DELIBERATE · TOGETHER · PER ASPERA AD ASTRA</div>
   <div class="footer-text successor">SUCCESSOR TO SLIMEX SPACE AGENCY · COMPLETE RESTRUCTURE &amp; REVAMP · 2026</div>
 </footer>
 
+<script>
+  let selectedRole = '';
+
+  function selectJob(card, role) {
+    // Deselect all cards
+    document.querySelectorAll('.job-card').forEach(c => c.classList.remove('selected'));
+    // Select this card
+    card.classList.add('selected');
+    selectedRole = role;
+    // Sync the dropdown
+    const dropdown = document.getElementById('appRole');
+    for (let i = 0; i < dropdown.options.length; i++) {
+      if (dropdown.options[i].text === role) {
+        dropdown.selectedIndex = i;
+        break;
+      }
+    }
+    // Show selected role banner
+    const banner = document.getElementById('selectedRoleDisplay');
+    banner.textContent = '✓ SELECTED ROLE: ' + role.toUpperCase();
+    banner.classList.add('visible');
+    // Scroll to form
+    document.querySelector('.apply-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Keep card selection in sync if user uses the dropdown
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('appRole').addEventListener('change', function() {
+      const role = this.value;
+      document.querySelectorAll('.job-card').forEach(c => {
+        c.classList.remove('selected');
+        if (c.dataset.role === role) c.classList.add('selected');
+      });
+      if (role) {
+        selectedRole = role;
+        const banner = document.getElementById('selectedRoleDisplay');
+        banner.textContent = '✓ SELECTED ROLE: ' + role.toUpperCase();
+        banner.classList.add('visible');
+      }
+    });
+  });
+
+  function submitApplication() {
+    const name    = document.getElementById('appName').value.trim();
+    const email   = document.getElementById('appEmail').value.trim();
+    const role    = document.getElementById('appRole').value;
+    const exp     = document.getElementById('appExp').value;
+    const cover   = document.getElementById('appCover').value.trim();
+
+    if (!name || !email || !role) {
+      alert('Please fill in your name, email, and select a position before submitting.');
+      return;
+    }
+
+    const subject = encodeURIComponent('Horizon Aerospace Job Application — ' + role);
+    const body = encodeURIComponent(
+      'HORIZON AEROSPACE — JOB APPLICATION\n' +
+      '=====================================\n\n' +
+      'Name:        ' + name + '\n' +
+      'Email:       ' + email + '\n' +
+      'Position:    ' + role + '\n' +
+      'Experience:  ' + (exp || 'Not specified') + '\n\n' +
+      '--- Cover Letter ---\n' +
+      (cover || '(No cover letter provided)') + '\n\n' +
+      '=====================================\n' +
+      'Submitted via Horizon Aerospace Careers Portal\n' +
+      'Republic of Retardia · Kerbin Space Center'
+    );
+
+    window.location.href = 'mailto:kohanyodubya@gmail.com?subject=' + subject + '&body=' + body;
+  }
+</script>
 </body>
 </html>
