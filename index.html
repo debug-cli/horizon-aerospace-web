@@ -458,6 +458,8 @@
     letter-spacing: 0.05em;
   }
   .status-complete  { background: rgba(0,229,160,0.08);   color: var(--green); border: 1px solid rgba(0,229,160,0.3); font-weight: 700; }
+  .status-partial   { background: rgba(255,170,0,0.08);   color: var(--gold);  border: 1px solid rgba(255,170,0,0.35); font-weight: 700; }
+  .status-delayed   { background: rgba(255,77,77,0.07);   color: #ff7070;      border: 1px dashed rgba(255,77,77,0.3); }
   .status-scheduled { background: rgba(138,154,176,0.07); color: var(--text3); border: 1px dashed rgba(138,154,176,0.25); }
   .status-pending   { background: rgba(245,200,0,0.06);   color: var(--gold2); border: 1px dashed rgba(245,200,0,0.2); }
 
@@ -822,7 +824,7 @@
     <a href="#roadmap">ROADMAP</a>
     <a href="#careers" style="color:var(--gold);">CAREERS</a>
   </nav>
-  <div class="header-status" style="color:var(--green);border-color:rgba(0,229,160,0.3);background:rgba(0,229,160,0.07);">✓ 4 MISSIONS COMPLETE</div>
+
 </header>
 
 <!-- HERO -->
@@ -897,7 +899,7 @@
       <div class="hero-stat-label">ACTIVE PROGRAMS</div>
     </div>
     <div class="hero-stat">
-      <div class="hero-stat-val" style="color:var(--green);">4</div>
+      <div class="hero-stat-val" style="color:var(--green);">5</div>
       <div class="hero-stat-label">MISSIONS FLOWN</div>
     </div>
     <div class="hero-stat">
@@ -905,8 +907,8 @@
       <div class="hero-stat-label">CREW INCIDENTS</div>
     </div>
     <div class="hero-stat">
-      <div class="hero-stat-val">5</div>
-      <div class="hero-stat-label">MISSIONS SCHEDULED</div>
+      <div class="hero-stat-val" style="color:#ff7070;">1</div>
+      <div class="hero-stat-label">MISSIONS DELAYED</div>
     </div>
   </div>
 
@@ -939,6 +941,34 @@
   </div>
 
   <div class="news-grid">
+
+    <!-- ECOSTRAT-3 DELAYED -->
+    <div class="news-item" style="border-color:rgba(255,77,77,0.2);background:rgba(255,77,77,0.03);">
+      <div>
+        <div class="news-meta">
+          <span class="news-tag" style="background:rgba(255,77,77,0.1);color:#ff7070;border:1px solid rgba(255,77,77,0.3);">⚠ MISSION DELAYED</span>
+          <span class="news-tag tag-programs">ECOSTRAT-3</span>
+          <span class="news-date">Latest</span>
+        </div>
+        <div class="news-headline">EcoStrat-3 reusable launch vehicle debut postponed following ABLE-2 findings</div>
+        <p class="news-body">Following the ABLE-2 partial success, Horizon Aerospace has made the decision to delay EcoStrat-3. The ABLE-2 mission demonstrated that reusable rocket technology is theoretically achievable — but also revealed that the agency does not yet have the engineering capability or understanding to implement it safely. Launching EcoStrat-3 on an unproven reusable vehicle would be inconsistent with Horizon's core commitment to safety. A new launch date will be confirmed once the ABLE programme has closed the identified capability gaps. No crew is at risk; EcoStrat-3 is an uncrewed mission.</p>
+      </div>
+      <span class="news-emoji">⏸</span>
+    </div>
+
+    <!-- ABLE-2 PARTIAL -->
+    <div class="news-item" style="border-color:rgba(255,170,0,0.2);background:rgba(255,170,0,0.03);">
+      <div>
+        <div class="news-meta">
+          <span class="news-tag" style="background:rgba(255,170,0,0.1);color:var(--gold);border:1px solid rgba(255,170,0,0.3);">⚠ PARTIAL SUCCESS</span>
+          <span class="news-tag" style="background:rgba(192,132,252,0.1);color:#c084fc;border:1px solid rgba(192,132,252,0.25);">ABLE-2</span>
+          <span class="news-date">Recent</span>
+        </div>
+        <div class="news-headline">ABLE-2 partial success — reusability confirmed possible, but beyond current Horizon capability</div>
+        <p class="news-body">ABLE-2 has returned a mixed result. The mission successfully demonstrated that reusable rocket technology is physically achievable — a significant scientific finding. However, the data also made clear that Horizon Aerospace's current engineering understanding is insufficient to implement it reliably and safely. The Safety Review Board has classified the mission as a partial success and has recommended a full programme review before any further reusable vehicle flights. EcoStrat-3 has been delayed as a direct consequence.</p>
+      </div>
+      <span class="news-emoji">⚠️</span>
+    </div>
 
     <!-- ABLE-1 SUCCESS -->
     <div class="news-item" style="border-color:rgba(192,132,252,0.25);background:rgba(192,132,252,0.04);">
@@ -1118,19 +1148,19 @@
         <span class="mission-status status-complete">✓ COMPLETE</span>
       </div>
 
-      <div class="mission-row">
+      <div class="mission-row" style="border-color:rgba(255,77,77,0.2);background:rgba(255,77,77,0.03);">
         <div class="mission-dot dot-green">ES3</div>
         <div class="mission-info">
           <div class="mission-title">EcoStrat-3 — First Reusable Launch Vehicle Test</div>
-          <div class="mission-sub">Debut flight of Horizon Aerospace's reusable launch vehicle. The first stage will attempt a propulsive return and landing following payload deployment. Successful recovery unlocks a new era of cost-efficient access to Kerbin orbit.</div>
+          <div class="mission-sub">Delayed. The reusable launch vehicle debut has been postponed following ABLE-2's findings that Horizon Aerospace does not yet have the capability or engineering understanding to safely implement reusable rocket technology. Mission will be rescheduled once the ABLE programme has resolved the identified capability gaps.</div>
           <div class="waypoints">
             <span class="waypoint green">KERBIN ORBIT</span>
             <span class="waypoint green">UNCREWED</span>
             <span class="waypoint green">REUSABLE LV</span>
-            <span class="waypoint green">BOOSTER RECOVERY</span>
+            <span class="waypoint" style="background:rgba(255,77,77,0.08);color:#ff7070;border-color:rgba(255,77,77,0.25);">DELAYED — ABLE-2 FINDINGS</span>
           </div>
         </div>
-        <span class="mission-status status-scheduled">◌ SCHEDULED · Y2028 Q1</span>
+        <span class="mission-status status-delayed">⚠ DELAYED · DATE TBD</span>
       </div>
 
     </div>
@@ -1161,22 +1191,23 @@
         <span class="mission-status status-complete">✓ COMPLETE</span>
       </div>
 
-      <div class="mission-row">
-        <div class="mission-dot" style="background:rgba(192,132,252,0.07);color:rgba(192,132,252,0.4);border:1px solid rgba(192,132,252,0.15);">A2</div>
+      <div class="mission-row" style="border-color:rgba(255,170,0,0.25);background:rgba(255,170,0,0.03);">
+        <div class="mission-dot" style="background:rgba(255,170,0,0.12);color:var(--gold);border:1px solid rgba(255,170,0,0.3);">A2</div>
         <div class="mission-info">
-          <div class="mission-title">ABLE-2 — Iterative Design Test</div>
-          <div class="mission-sub">Second test flight incorporating design improvements identified from ABLE-1 data review. Scope and objectives to be defined following ABLE-1 analysis.</div>
+          <div class="mission-title">ABLE-2 — Reusable Rocket Feasibility Test</div>
+          <div class="mission-sub">Partial success. The mission confirmed that reusable rocket technology is theoretically achievable, but demonstrated that Horizon Aerospace does not yet have the capability or engineering understanding to safely implement it. The data is valuable — but the programme's direction must be reassessed. EcoStrat-3's reusable launch vehicle debut has been delayed as a direct result.</div>
           <div class="waypoints">
-            <span class="waypoint" style="background:rgba(192,132,252,0.07);color:#c084fc;border-color:rgba(192,132,252,0.2);">UNCREWED</span>
-            <span class="waypoint" style="background:rgba(192,132,252,0.07);color:#c084fc;border-color:rgba(192,132,252,0.2);">DESIGN TEST</span>
-            <span class="waypoint" style="background:rgba(192,132,252,0.07);color:#c084fc;border-color:rgba(192,132,252,0.2);">TBD</span>
+            <span class="waypoint" style="background:rgba(255,170,0,0.07);color:var(--gold);border-color:rgba(255,170,0,0.2);">UNCREWED</span>
+            <span class="waypoint" style="background:rgba(255,170,0,0.07);color:var(--gold);border-color:rgba(255,170,0,0.2);">REUSABILITY CONFIRMED POSSIBLE</span>
+            <span class="waypoint" style="background:rgba(255,170,0,0.07);color:var(--gold);border-color:rgba(255,170,0,0.2);">CAPABILITY GAP IDENTIFIED</span>
+            <span class="waypoint" style="background:rgba(255,170,0,0.07);color:var(--gold);border-color:rgba(255,170,0,0.2);">ECOSTRAT-3 DELAYED</span>
           </div>
         </div>
-        <span class="mission-status status-pending">◌ PENDING · AWAITS ABLE-1 ANALYSIS</span>
+        <span class="mission-status status-partial">⚠ PARTIAL SUCCESS</span>
       </div>
 
     </div>
-    <div class="prog-end" style="border-color:rgba(192,132,252,0.15);color:rgba(192,132,252,0.4);">— ABLE MANIFEST · 1 COMPLETE · 1 PENDING —</div>
+    <div class="prog-end" style="border-color:rgba(192,132,252,0.15);color:rgba(192,132,252,0.4);">— ABLE MANIFEST · 1 COMPLETE · 1 PARTIAL SUCCESS · PROGRAMME UNDER REVIEW —</div>
   </div>
 
   <!-- VANGUARD -->
@@ -1392,10 +1423,16 @@
       <p class="roadmap-desc">Heat shield and reentry profile validation at lunar-return velocity. Crew certification gated on this result.</p>
     </div>
 
+    <div class="roadmap-item" style="--dot-color: var(--gold);">
+      <div class="roadmap-date" style="color:var(--gold);">PARTIAL SUCCESS ⚠</div>
+      <div class="roadmap-label">ABLE-2 — Reusable Rocket Feasibility Test</div>
+      <p class="roadmap-desc">Confirmed reusable rockets are achievable. Also confirmed Horizon does not yet have the capability to implement them safely. Programme under review. EcoStrat-3 delayed as a direct result.</p>
+    </div>
+
     <div class="roadmap-item">
-      <div class="roadmap-date">YEAR 2028 · Q1 — SCHEDULED</div>
-      <div class="roadmap-label">EcoStrat-3 &amp; Vanguard-2A · First Reusable Launch Vehicle &amp; First Crewed Kerbin Orbital</div>
-      <p class="roadmap-desc">EcoStrat-3 debuts Horizon's reusable launch vehicle — first stage attempts propulsive return and landing after payload deployment. Concurrently, Vanguard-2A crew of two complete a 3-day Kerbin orbital shakedown.</p>
+      <div class="roadmap-date" style="color:#ff7070;">DELAYED ⚠ — DATE TBD</div>
+      <div class="roadmap-label">EcoStrat-3 &amp; Vanguard-2A · Reusable LV Debut &amp; First Crewed Kerbin Orbital</div>
+      <p class="roadmap-desc">EcoStrat-3 postponed pending resolution of capability gaps identified by ABLE-2. Vanguard-2A scheduling unaffected. EcoStrat-3 date to be confirmed once ABLE programme review is complete.</p>
     </div>
 
     <div class="roadmap-item">
