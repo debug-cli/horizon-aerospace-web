@@ -942,6 +942,20 @@
 
   <div class="news-grid">
 
+    <!-- ECOSTRAT-1 OFFLINE -->
+    <div class="news-featured" style="border-left-color:#ff7070;">
+      <div>
+        <div class="news-meta">
+          <span class="news-tag" style="background:rgba(255,77,77,0.1);color:#ff7070;border:1px solid rgba(255,77,77,0.3);">⚠ LOSS OF SIGNAL</span>
+          <span class="news-tag tag-programs">ECOSTRAT-1</span>
+          <span class="news-date">Latest</span>
+        </div>
+        <div class="news-headline" style="color:#ff7070;">EcoStrat-1 goes offline — all communications halted, cause unknown</div>
+        <p class="news-body">Ground stations at Kerbin Space Center have lost all contact with EcoStrat-1. The satellite's telemetry feed cut out without warning and all attempts to re-establish communication have so far been unsuccessful. The cause is unknown. Mission data collected prior to the loss of signal is preserved. Engineering and flight operations teams are actively working to diagnose the issue. Horizon Aerospace will issue a further statement as more information becomes available.</p>
+      </div>
+      <span class="news-emoji">📡</span>
+    </div>
+
     <!-- ECOSTRAT-3 DELAYED -->
     <div class="news-item" style="border-color:rgba(255,77,77,0.2);background:rgba(255,77,77,0.03);">
       <div>
@@ -1118,19 +1132,20 @@
         <span class="mission-status status-complete">✓ COMPLETE</span>
       </div>
 
-      <div class="mission-row" style="border-color:rgba(0,229,160,0.25);background:rgba(0,229,160,0.04);">
-        <div class="mission-dot dot-green">ES1</div>
+      <div class="mission-row" style="border-color:rgba(255,77,77,0.2);background:rgba(255,77,77,0.03);">
+        <div class="mission-dot" style="background:rgba(255,77,77,0.1);color:#ff7070;border:1px solid rgba(255,77,77,0.25);">ES1</div>
         <div class="mission-info">
-          <div class="mission-title">EcoStrat-1 — Atmospheric &amp; Weather Monitor ✓</div>
-          <div class="mission-sub">First Horizon satellite. Atmospheric composition and weather monitoring instruments in Kerbin equatorial orbit. Telemetry nominal. All instruments operational.</div>
+          <div class="mission-title">EcoStrat-1 — Atmospheric &amp; Weather Monitor</div>
+          <div class="mission-sub">Satellite has gone offline. All communications with EcoStrat-1 have halted. Cause unknown. Ground stations are attempting to re-establish contact. Mission data collected prior to loss of signal is preserved.</div>
           <div class="waypoints">
             <span class="waypoint green">KERBIN ORBIT</span>
             <span class="waypoint green">EQUATORIAL</span>
             <span class="waypoint green">UNCREWED</span>
-            <span class="waypoint green">TELEMETRY NOMINAL</span>
+            <span class="waypoint" style="background:rgba(255,77,77,0.08);color:#ff7070;border-color:rgba(255,77,77,0.25);">OFFLINE</span>
+            <span class="waypoint" style="background:rgba(255,77,77,0.08);color:#ff7070;border-color:rgba(255,77,77,0.25);">NO COMMS</span>
           </div>
         </div>
-        <span class="mission-status status-complete">✓ COMPLETE</span>
+        <span class="mission-status status-delayed">⚠ OFFLINE · NO COMMS</span>
       </div>
 
       <div class="mission-row" style="border-color:rgba(0,229,160,0.25);background:rgba(0,229,160,0.04);">
@@ -1393,10 +1408,10 @@
       <p class="roadmap-desc">Horizon's first crewed mission. Kerbonauts reached space and returned safely. All objectives met. Crew in good health. Historic first for the agency.</p>
     </div>
 
-    <div class="roadmap-item founded">
-      <div class="roadmap-date">COMPLETE ✓</div>
+    <div class="roadmap-item" style="--dot-bg:#ff7070;">
+      <div class="roadmap-date" style="color:#ff7070;">OFFLINE ⚠ · NO COMMS</div>
       <div class="roadmap-label">EcoStrat-1 — Atmospheric &amp; Weather Monitor Satellite</div>
-      <p class="roadmap-desc">First Horizon satellite deployed to Kerbin equatorial orbit. All instruments operational. Telemetry nominal. EcoStrat program confirmed operational.</p>
+      <p class="roadmap-desc">Deployed to equatorial orbit successfully. Subsequently went offline — all communications halted. Cause under investigation. Prior mission data preserved.</p>
     </div>
 
     <div class="roadmap-item founded">
