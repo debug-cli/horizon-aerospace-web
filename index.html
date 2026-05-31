@@ -362,6 +362,12 @@
     border: 1px solid rgba(245,200,0,0.2);
   }
 
+  .prog-able {
+    color: #c084fc;
+    background: rgba(192,132,252,0.08);
+    border: 1px solid rgba(192,132,252,0.2);
+  }
+
   .program-desc-text {
     font-family: 'Space Mono', monospace;
     font-size: 10px;
@@ -816,7 +822,7 @@
     <a href="#roadmap">ROADMAP</a>
     <a href="#careers" style="color:var(--gold);">CAREERS</a>
   </nav>
-  <div class="header-status" style="color:var(--green);border-color:rgba(0,229,160,0.3);background:rgba(0,229,160,0.07);">✓ 3 MISSIONS COMPLETE</div>
+  <div class="header-status" style="color:var(--green);border-color:rgba(0,229,160,0.3);background:rgba(0,229,160,0.07);">✓ 4 MISSIONS COMPLETE</div>
 </header>
 
 <!-- HERO -->
@@ -887,11 +893,11 @@
 
   <div class="hero-stats">
     <div class="hero-stat">
-      <div class="hero-stat-val">2</div>
+      <div class="hero-stat-val">3</div>
       <div class="hero-stat-label">ACTIVE PROGRAMS</div>
     </div>
     <div class="hero-stat">
-      <div class="hero-stat-val" style="color:var(--green);">3</div>
+      <div class="hero-stat-val" style="color:var(--green);">4</div>
       <div class="hero-stat-label">MISSIONS FLOWN</div>
     </div>
     <div class="hero-stat">
@@ -933,6 +939,20 @@
   </div>
 
   <div class="news-grid">
+
+    <!-- ABLE-1 SUCCESS -->
+    <div class="news-item" style="border-color:rgba(192,132,252,0.25);background:rgba(192,132,252,0.04);">
+      <div>
+        <div class="news-meta">
+          <span class="news-tag" style="background:rgba(0,229,160,0.12);color:var(--green);border:1px solid rgba(0,229,160,0.3);">✓ MISSION SUCCESS</span>
+          <span class="news-tag" style="background:rgba(192,132,252,0.1);color:#c084fc;border:1px solid rgba(192,132,252,0.25);">ABLE-1</span>
+          <span class="news-date">Latest</span>
+        </div>
+        <div class="news-headline">ABLE-1 rocket design test flight successful — new program validated</div>
+        <p class="news-body">Horizon Aerospace's new ABLE program has completed its first test flight. ABLE-1 validated the full propulsion stack, airframe, and guidance systems across a complete flight profile. All design objectives were met. Engineering teams are now reviewing telemetry data ahead of ABLE-2 iteration planning. The ABLE program marks Horizon's commitment to in-house rocket design development separate from operational mission programs.</p>
+      </div>
+      <span class="news-emoji">🔬</span>
+    </div>
 
     <!-- ECOSTRAT-2 SUCCESS -->
     <div class="news-item" style="border-color:rgba(0,229,160,0.2);background:rgba(0,229,160,0.03);">
@@ -1115,6 +1135,46 @@
 
     </div>
     <div class="prog-end">— ECOSTRAT MANIFEST · 3 COMPLETE · 1 SCHEDULED —</div>
+  </div>
+
+  <!-- ABLE -->
+  <div class="program-block">
+    <div class="program-header">
+      <span class="program-name prog-able">ABLE</span>
+      <span class="program-desc-text">Rocket Design Testing Program · Iterative propulsion &amp; airframe R&D · 1 mission complete</span>
+    </div>
+    <div class="mission-list">
+
+      <div class="mission-row" style="border-color:rgba(192,132,252,0.25);background:rgba(192,132,252,0.04);">
+        <div class="mission-dot" style="background:rgba(192,132,252,0.12);color:#c084fc;border:1px solid rgba(192,132,252,0.25);">A1</div>
+        <div class="mission-info">
+          <div class="mission-title">ABLE-1 — Rocket Design Validation Flight ✓</div>
+          <div class="mission-sub">First test flight under the ABLE program. Full propulsion stack, airframe, and guidance systems validated across a complete ascent and descent profile. All design objectives met. Data is being reviewed for iteration into ABLE-2.</div>
+          <div class="waypoints">
+            <span class="waypoint" style="background:rgba(192,132,252,0.07);color:#c084fc;border-color:rgba(192,132,252,0.2);">UNCREWED</span>
+            <span class="waypoint" style="background:rgba(192,132,252,0.07);color:#c084fc;border-color:rgba(192,132,252,0.2);">DESIGN TEST</span>
+            <span class="waypoint" style="background:rgba(192,132,252,0.07);color:#c084fc;border-color:rgba(192,132,252,0.2);">ALL OBJECTIVES MET</span>
+          </div>
+        </div>
+        <span class="mission-status status-complete">✓ COMPLETE</span>
+      </div>
+
+      <div class="mission-row">
+        <div class="mission-dot" style="background:rgba(192,132,252,0.07);color:rgba(192,132,252,0.4);border:1px solid rgba(192,132,252,0.15);">A2</div>
+        <div class="mission-info">
+          <div class="mission-title">ABLE-2 — Iterative Design Test</div>
+          <div class="mission-sub">Second test flight incorporating design improvements identified from ABLE-1 data review. Scope and objectives to be defined following ABLE-1 analysis.</div>
+          <div class="waypoints">
+            <span class="waypoint" style="background:rgba(192,132,252,0.07);color:#c084fc;border-color:rgba(192,132,252,0.2);">UNCREWED</span>
+            <span class="waypoint" style="background:rgba(192,132,252,0.07);color:#c084fc;border-color:rgba(192,132,252,0.2);">DESIGN TEST</span>
+            <span class="waypoint" style="background:rgba(192,132,252,0.07);color:#c084fc;border-color:rgba(192,132,252,0.2);">TBD</span>
+          </div>
+        </div>
+        <span class="mission-status status-pending">◌ PENDING · AWAITS ABLE-1 ANALYSIS</span>
+      </div>
+
+    </div>
+    <div class="prog-end" style="border-color:rgba(192,132,252,0.15);color:rgba(192,132,252,0.4);">— ABLE MANIFEST · 1 COMPLETE · 1 PENDING —</div>
   </div>
 
   <!-- VANGUARD -->
@@ -1304,6 +1364,12 @@
       <div class="roadmap-date">COMPLETE ✓</div>
       <div class="roadmap-label">EcoStrat-1 — Atmospheric &amp; Weather Monitor Satellite</div>
       <p class="roadmap-desc">First Horizon satellite deployed to Kerbin equatorial orbit. All instruments operational. Telemetry nominal. EcoStrat program confirmed operational.</p>
+    </div>
+
+    <div class="roadmap-item founded">
+      <div class="roadmap-date">COMPLETE ✓</div>
+      <div class="roadmap-label">ABLE-1 — Rocket Design Validation Flight</div>
+      <p class="roadmap-desc">First ABLE program test flight. Full propulsion stack, airframe, and guidance validated. All design objectives met. ABLE-2 iteration planning underway.</p>
     </div>
 
     <div class="roadmap-item">
