@@ -35,29 +35,198 @@
     overflow-x: hidden;
   }
 
-  .stars {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    pointer-events: none; z-index: 0;
-    background:
-      radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.4) 0%, transparent 100%),
-      radial-gradient(1px 1px at 22% 42%, rgba(255,255,255,0.25) 0%, transparent 100%),
-      radial-gradient(1px 1px at 38% 8%,  rgba(255,255,255,0.35) 0%, transparent 100%),
-      radial-gradient(1px 1px at 53% 67%, rgba(255,255,255,0.25) 0%, transparent 100%),
-      radial-gradient(1px 1px at 68% 28%, rgba(255,255,255,0.4) 0%, transparent 100%),
-      radial-gradient(1px 1px at 82% 54%, rgba(255,255,255,0.3) 0%, transparent 100%),
-      radial-gradient(1px 1px at 91% 18%, rgba(255,255,255,0.25) 0%, transparent 100%),
-      radial-gradient(1px 1px at 14% 77%, rgba(255,255,255,0.3) 0%, transparent 100%),
-      radial-gradient(1px 1px at 33% 88%, rgba(255,255,255,0.25) 0%, transparent 100%),
-      radial-gradient(1px 1px at 59% 93%, rgba(255,255,255,0.3) 0%, transparent 100%),
-      radial-gradient(1px 1px at 76% 82%, rgba(255,255,255,0.25) 0%, transparent 100%),
-      radial-gradient(1px 1px at 4%  52%, rgba(255,255,255,0.3) 0%, transparent 100%),
-      radial-gradient(1px 1px at 96% 72%, rgba(255,255,255,0.4) 0%, transparent 100%),
-      radial-gradient(1px 1px at 47% 46%, rgba(255,255,255,0.3) 0%, transparent 100%),
-      radial-gradient(1px 1px at 5%  22%, rgba(255,255,255,0.25) 0%, transparent 100%),
-      radial-gradient(1px 1px at 63% 35%, rgba(255,255,255,0.3) 0%, transparent 100%),
-      radial-gradient(1px 1px at 88% 9%,  rgba(255,255,255,0.4) 0%, transparent 100%),
-      radial-gradient(1px 1px at 29% 61%, rgba(255,255,255,0.2) 0%, transparent 100%),
-      radial-gradient(1px 1px at 74% 44%, rgba(255,255,255,0.3) 0%, transparent 100%);
+  /* ── STARFIELD CANVAS ── */
+  #starCanvas {
+    position: fixed; top:0; left:0; width:100%; height:100%;
+    pointer-events:none; z-index:0;
+  }
+
+  /* ── CRT SCANLINES ── */
+  #crt {
+    position: fixed; inset:0; z-index:999; pointer-events:none;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 3px,
+      rgba(0,0,0,0.08) 3px,
+      rgba(0,0,0,0.08) 4px
+    );
+    opacity: 0.45;
+    transition: opacity 0.3s;
+  }
+  body.light-mode #crt { opacity: 0.15; }
+
+  /* ── LOADING SCREEN ── */
+  #loader {
+    position: fixed; inset:0; z-index:10000;
+    background: #09080a;
+    display: flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    gap:1.5rem;
+    transition: opacity 0.8s ease;
+  }
+  #loader.fade { opacity:0; pointer-events:none; }
+  .loader-emblem { animation: loader-pulse 1.5s ease-in-out infinite; }
+  .loader-emblem svg { width:80px; height:80px; }
+  @keyframes loader-pulse {
+    0%,100% { filter: drop-shadow(0 0 8px rgba(245,200,0,0.4)); transform:scale(1); }
+    50%      { filter: drop-shadow(0 0 24px rgba(245,200,0,0.9)); transform:scale(1.06); }
+  }
+  .loader-text {
+    font-family:'Orbitron',monospace; font-size:11px; font-weight:700;
+    letter-spacing:0.4em; color:rgba(245,200,0,0.7);
+    animation: flicker-text 3s infinite;
+  }
+  .loader-bar-wrap {
+    width:200px; height:2px; background:rgba(245,200,0,0.15); border-radius:1px;
+  }
+  .loader-bar {
+    height:100%; background:var(--gold); border-radius:1px; width:0%;
+    animation: loader-fill 2s ease forwards;
+  }
+  @keyframes loader-fill { to { width:100%; } }
+
+  /* ── FLICKER TEXT ── */
+  @keyframes flicker-text {
+    0%,19%,21%,23%,25%,54%,56%,100% { opacity:1; text-shadow: 0 0 8px currentColor; }
+    20%,24%,55% { opacity:0.6; text-shadow: none; }
+  }
+  .flicker { animation: flicker-text 6s infinite; }
+  .flicker-slow { animation: flicker-text 12s infinite 2s; }
+
+  /* ── DARK / LIGHT TOGGLE ── */
+  .theme-btn {
+    font-family:'Space Mono',monospace; font-size:10px;
+    color:var(--text3); background:transparent;
+    border:1px solid var(--border); padding:5px 10px;
+    cursor:pointer; letter-spacing:0.1em; border-radius:2px;
+    transition:color 0.2s, border-color 0.2s;
+  }
+  .theme-btn:hover { color:var(--gold); border-color:rgba(245,200,0,0.3); }
+
+  body.light-mode {
+    --bg: #f0ede8; --bg2: #e8e3dc; --bg3: #ddd8d0;
+    --border: rgba(100,80,20,0.12); --border2: rgba(100,80,20,0.22);
+    --text: #1a1208; --text2: #5a4a20; --text3: #8a7a50;
+  }
+  body.light-mode header { background: rgba(240,237,232,0.93); }
+  body.light-mode #loader { background:#f0ede8; }
+
+  /* ── ROCKET ── */
+  #rocket {
+    position:fixed; bottom:-120px; left:-120px;
+    z-index:500; pointer-events:none;
+    font-size:48px;
+    filter: drop-shadow(0 0 12px rgba(245,200,0,0.6));
+    transition: none;
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity:0; transform:translateY(28px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+
+  /* ── TOOLTIP ── */
+  [data-tip] { position:relative; cursor:pointer; }
+  [data-tip]::after {
+    content: attr(data-tip);
+    position:absolute; bottom:calc(100% + 8px); left:50%;
+    transform:translateX(-50%);
+    background:var(--bg3); border:1px solid var(--border2);
+    color:var(--text2); font-family:'Space Mono',monospace; font-size:10px;
+    line-height:1.5; letter-spacing:0.05em;
+    padding:7px 11px; border-radius:3px; white-space:pre-wrap;
+    max-width:220px; text-align:left;
+    opacity:0; pointer-events:none;
+    transition:opacity 0.2s; z-index:900;
+  }
+  [data-tip]:hover::after { opacity:1; }
+
+  /* ── STAT BARS ── */
+  .stat-bars { display:flex; flex-direction:column; gap:8px; margin-top:1.5rem; }
+  .stat-bar-row { display:grid; grid-template-columns:90px 1fr 40px; gap:10px; align-items:center; }
+  .stat-bar-label { font-family:'Space Mono',monospace; font-size:9px; color:var(--text3); letter-spacing:0.15em; }
+  .stat-bar-track {
+    height:4px; background:var(--border2); border-radius:2px; overflow:hidden;
+  }
+  .stat-bar-fill {
+    height:100%; border-radius:2px;
+    transition: width 1.2s cubic-bezier(.4,0,.2,1);
+    width:0%;
+  }
+  .stat-bar-val { font-family:'Space Mono',monospace; font-size:9px; color:var(--text2); text-align:right; }
+
+  /* ── MISSION CLOCK ── */
+  .mission-clock {
+    display:flex; gap:1.5rem; flex-wrap:wrap;
+    justify-content:center; margin:2rem auto 0;
+    padding:1rem 2rem;
+    background:var(--bg2); border:1px solid var(--border);
+    border-radius:2px; width:fit-content;
+  }
+  .clock-unit { text-align:center; }
+  .clock-val {
+    font-family:'Orbitron',monospace; font-size:28px; font-weight:900;
+    color:var(--gold); line-height:1;
+    text-shadow:0 0 16px rgba(245,200,0,0.35);
+  }
+  .clock-label {
+    font-family:'Space Mono',monospace; font-size:9px;
+    color:var(--text3); letter-spacing:0.2em; margin-top:4px;
+  }
+
+  /* ── KERBONAUT ROSTER ── */
+  .kerbonaut-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px; }
+  .kerb-card {
+    background:var(--bg2); border:1px solid var(--border);
+    border-radius:2px; padding:1.25rem;
+    transition:border-color 0.2s, transform 0.2s;
+  }
+  .kerb-card:hover { border-color:var(--gold); transform:translateY(-2px); }
+  .kerb-avatar {
+    width:48px; height:48px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:22px; margin-bottom:0.75rem;
+    border:2px solid;
+  }
+  .kerb-name { font-family:'Orbitron',monospace; font-size:12px; font-weight:700; color:var(--text); margin-bottom:3px; }
+  .kerb-status { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.15em; margin-bottom:0.75rem; }
+  .kerb-missions { display:flex; flex-direction:column; gap:4px; }
+  .kerb-mission {
+    font-family:'Space Mono',monospace; font-size:9px; color:var(--text3);
+    padding:3px 7px; background:var(--bg3); border-radius:2px;
+    border-left:2px solid var(--gold);
+  }
+
+  /* ── FLOWCHART ── */
+  .flowchart { display:flex; flex-direction:column; align-items:center; gap:0; }
+  .flow-phase { width:100%; margin-bottom:0.5rem; }
+  .flow-phase-label {
+    font-family:'Orbitron',monospace; font-size:11px; font-weight:700;
+    color:var(--text3); letter-spacing:0.2em; text-align:center;
+    padding:6px; margin-bottom:8px;
+    border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+  }
+  .flow-nodes { display:flex; justify-content:center; flex-wrap:wrap; gap:8px; }
+  .flow-node {
+    background:var(--bg2); border:1px solid var(--border);
+    border-radius:4px; padding:10px 14px; text-align:center;
+    min-width:130px; position:relative;
+    transition:border-color 0.2s;
+  }
+  .flow-node.complete { border-color:rgba(0,229,160,0.4); background:rgba(0,229,160,0.04); }
+  .flow-node.partial  { border-color:rgba(245,200,0,0.4);  background:rgba(245,200,0,0.04); }
+  .flow-node.delayed  { border-color:rgba(255,77,77,0.3);  background:rgba(255,77,77,0.03); }
+  .flow-node.retired  { border-color:rgba(90,79,106,0.3);  background:rgba(90,79,106,0.04); opacity:0.6; }
+  .flow-node-id { font-family:'Orbitron',monospace; font-size:10px; font-weight:700; margin-bottom:4px; }
+  .flow-node-name { font-family:'Space Mono',monospace; font-size:9px; color:var(--text2); line-height:1.4; }
+  .flow-node-status { font-size:10px; margin-top:5px; }
+  .flow-arrow { font-size:14px; color:var(--text3); margin:0 2px; align-self:center; }
+  .flow-connector {
+    width:2px; height:20px; background:var(--border);
+    margin:0 auto;
   }
 
   /* ── HEADER ── */
@@ -755,11 +924,462 @@
     margin-top: 10px;
     line-height: 1.6;
   }
+  .footer-text.successor {
+    color: var(--crimson2);
+    opacity: 0.6;
+    margin-top: 8px;
+    font-size: 9px;
+  }
+  /* ── LEADERSHIP ── */
+  .leadership-bar {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1rem 1.5rem;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    margin-bottom: 2.5rem;
+    border-radius: 2px;
+  }
+  .leadership-bar .role {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .leadership-bar .name {
+    font-family: 'Orbitron', monospace;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .leadership-bar .country {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--text2);
+    letter-spacing: 0.1em;
+    margin-left: auto;
+  }
+
+  /* ── CAREERS ── */
+  .jobs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 10px;
+    margin-bottom: 3rem;
+  }
+
+  .job-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 1.4rem;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+  }
+  .job-card:hover { border-color: var(--gold); background: rgba(245,200,0,0.03); }
+  .job-card.selected { border-color: var(--gold); background: rgba(245,200,0,0.06); }
+  .job-card.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 10px; right: 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--gold);
+  }
+
+  .job-dept {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--text3);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .job-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .job-desc {
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+  .job-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
+  .job-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    padding: 2px 7px;
+    background: rgba(245,200,0,0.07);
+    color: var(--gold);
+    border: 1px solid rgba(245,200,0,0.2);
+    border-radius: 2px;
+  }
+
+  .apply-form {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 2px;
+    padding: 2rem;
+  }
+
+  .apply-form-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.08em;
+  }
+
+  .apply-form-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .form-field { display: flex; flex-direction: column; gap: 5px; }
+  .form-field.full { grid-column: 1 / -1; }
+
+  .form-field label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .form-field input,
+  .form-field select,
+  .form-field textarea {
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    padding: 10px 12px;
+    border-radius: 2px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  .form-field input:focus,
+  .form-field select:focus,
+  .form-field textarea:focus { border-color: var(--gold); }
+
+  .form-field select option { background: var(--bg3); }
+
+  .form-field textarea { resize: vertical; min-height: 100px; }
+
+  .form-selected-role {
+    padding: 8px 12px;
+    background: rgba(245,200,0,0.07);
+    border: 1px solid rgba(245,200,0,0.25);
+    border-radius: 2px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    margin-bottom: 12px;
+    display: none;
+  }
+  .form-selected-role.visible { display: block; }
+
+  .submit-btn {
+    font-family: 'Orbitron', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--bg);
+    background: var(--gold);
+    border: none;
+    padding: 12px 2rem;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    margin-top: 4px;
+  }
+  .submit-btn:hover { background: #ffd740; transform: translateY(-1px); }
+
+  .form-notice {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+    margin-top: 10px;
+    line-height: 1.6;
+  }
+  /* ── MUSIC PLAYER ── */
+  .music-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--text3);
+    background: transparent;
+    border: 1px solid var(--border);
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+    border-radius: 2px;
+  }
+  .music-btn:hover { color: var(--gold); border-color: rgba(245,200,0,0.3); }
+  .music-btn.playing { color: var(--gold); border-color: rgba(245,200,0,0.4); background: rgba(245,200,0,0.05); }
+  .music-btn .btn-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--text3);
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+  .music-btn.playing .btn-dot {
+    background: var(--gold);
+    animation: pulse-dot 1.2s ease-in-out infinite;
+  }
+
+  #music-player {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 200;
+    width: 300px;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+    display: none;
+    flex-direction: column;
+  }
+  #music-player.open { display: flex; }
+
+  .player-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+  .player-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+  }
+  .player-close {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--text3);
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0 4px;
+    transition: color 0.2s;
+  }
+  .player-close:hover { color: var(--text); }
+
+  .player-now {
+    padding: 12px 14px 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .player-now-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--text3);
+    letter-spacing: 0.2em;
+    margin-bottom: 4px;
+  }
+  .player-now-track {
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .player-progress-wrap {
+    padding: 6px 14px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .player-progress-bar {
+    width: 100%;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+    margin-bottom: 5px;
+  }
+  .player-progress-fill {
+    height: 100%;
+    background: var(--gold);
+    border-radius: 2px;
+    width: 0%;
+    pointer-events: none;
+    transition: width 0.5s linear;
+  }
+  .player-time {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--text3);
+  }
+
+  .player-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .ctrl-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--text2);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 8px;
+    transition: color 0.2s;
+    letter-spacing: 0.05em;
+  }
+  .ctrl-btn:hover { color: var(--gold); }
+  .ctrl-btn.play-pause {
+    font-size: 16px;
+    color: var(--gold);
+    border: 1px solid rgba(245,200,0,0.3);
+    border-radius: 50%;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0;
+  }
+  .ctrl-btn.play-pause:hover { background: rgba(245,200,0,0.1); }
+
+  .player-volume {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .vol-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--text3);
+    letter-spacing: 0.15em;
+    flex-shrink: 0;
+  }
+  input[type=range].vol-slider {
+    flex: 1;
+    height: 3px;
+    accent-color: var(--gold);
+    cursor: pointer;
+  }
+
+  .player-tracklist {
+    max-height: 180px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .track-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    cursor: pointer;
+    transition: background 0.15s;
+    border-bottom: 1px solid var(--border);
+  }
+  .track-item:last-child { border-bottom: none; }
+  .track-item:hover { background: rgba(245,200,0,0.04); }
+  .track-item.active { background: rgba(245,200,0,0.07); }
+  .track-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--text3);
+    width: 16px;
+    flex-shrink: 0;
+  }
+  .track-item.active .track-num { color: var(--gold); }
+  .track-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--text2);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+  }
+  .track-item.active .track-name { color: var(--gold); }
 </style>
 </head>
 <body>
 
-<div class="stars"></div>
+<!-- CRT OVERLAY -->
+<div id="crt"></div>
+
+<!-- LOADING SCREEN -->
+<div id="loader">
+  <div class="loader-emblem">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(50,50)">
+        <polygon points="0,-38 3,-18 -3,-18" fill="#f5c800"/>
+        <polygon points="11.7,-36.2 8,-17 4,-19" fill="#f5c800"/>
+        <polygon points="22.2,-31.2 13,-14 9,-17" fill="#f5c800"/>
+        <polygon points="30.6,-22.9 16,-9 13,-13" fill="#f5c800"/>
+        <polygon points="36,-12.4 17,-3 15,-8" fill="#f5c800"/>
+        <polygon points="38,0 18,3 18,-3" fill="#f5c800"/>
+        <polygon points="36,12.4 17,8 15,3" fill="#f5c800"/>
+        <polygon points="30.6,22.9 13,13 16,9" fill="#f5c800"/>
+        <polygon points="22.2,31.2 9,17 13,14" fill="#f5c800"/>
+        <polygon points="11.7,36.2 4,19 8,17" fill="#f5c800"/>
+        <polygon points="0,38 -3,18 3,18" fill="#f5c800"/>
+        <polygon points="-11.7,36.2 -8,17 -4,19" fill="#f5c800"/>
+        <polygon points="-22.2,31.2 -13,14 -9,17" fill="#f5c800"/>
+        <polygon points="-30.6,22.9 -16,9 -13,13" fill="#f5c800"/>
+        <polygon points="-36,12.4 -17,3 -15,8" fill="#f5c800"/>
+        <polygon points="-38,0 -18,-3 -18,3" fill="#f5c800"/>
+        <polygon points="-36,-12.4 -15,-3 -17,-8" fill="#f5c800"/>
+        <polygon points="-30.6,-22.9 -13,-13 -16,-9" fill="#f5c800"/>
+        <polygon points="-22.2,-31.2 -9,-17 -13,-14" fill="#f5c800"/>
+        <polygon points="-11.7,-36.2 -4,-19 -8,-17" fill="#f5c800"/>
+        <polygon points="0,-20 16,14 -16,14" fill="#9b1c3a"/>
+        <polygon points="-8,14 8,14 5,22 -5,22" fill="#9b1c3a"/>
+      </g>
+    </svg>
+  </div>
+  <div class="loader-text">HORIZON AEROSPACE — INITIALISING</div>
+  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+</div>
+
+<!-- STARFIELD CANVAS -->
+<canvas id="starCanvas"></canvas>
+
+<!-- ROCKET -->
+<div id="rocket">🚀</div>
 
 <!-- HEADER -->
 <header>
@@ -824,7 +1444,7 @@
     <a href="#roadmap">ROADMAP</a>
     <a href="#careers" style="color:var(--gold);">CAREERS</a>
   </nav>
-
+  <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">☀ LIGHT</button>
 </header>
 
 <!-- HERO -->
@@ -882,7 +1502,7 @@
   </div>
 
   <div class="hero-eyebrow">HORIZON AEROSPACE · REPUBLIC OF RETARDIA · EST. 2026</div>
-  <h1 class="hero-title">ULTRA HORIZONTEM,<br>AD ASTRA.</h1>
+  <h1 class="hero-title flicker">ULTRA HORIZONTEM,<br>AD ASTRA.</h1>
   <p class="hero-sub">Horizon Aerospace is Kerbin's newest space agency — built from the ground up on the principles of safety, meticulous planning, and inter-agency cooperation. We don't launch for the sake of launching.</p>
 
   <div class="successor-banner">
@@ -911,6 +1531,15 @@
       <div class="hero-stat-label">MISSIONS SCHEDULED</div>
     </div>
   </div>
+
+  <!-- Mission Clock -->
+  <div class="mission-clock" id="missionClock">
+    <div class="clock-unit"><div class="clock-val" id="ck-d">000</div><div class="clock-label">DAYS</div></div>
+    <div class="clock-unit"><div class="clock-val" id="ck-h">00</div><div class="clock-label">HRS</div></div>
+    <div class="clock-unit"><div class="clock-val" id="ck-m">00</div><div class="clock-label">MIN</div></div>
+    <div class="clock-unit"><div class="clock-val" id="ck-s">00</div><div class="clock-label">SEC</div></div>
+  </div>
+  <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:0.2em;text-align:center;margin-top:6px;">AGENCY AGE — SINCE Y2026 DAY 001</div>
 
   <!-- Leadership bar -->
   <div class="leadership-bar" style="margin-top:2rem;">
@@ -943,7 +1572,7 @@
   <div class="news-grid">
 
     <!-- VALKYRIE-2A SUCCESS -->
-    <div class="news-item" style="border-color:rgba(245,200,0,0.2);background:rgba(245,200,0,0.03);">
+    <div class="news-item reveal" style="border-color:rgba(245,200,0,0.2);background:rgba(245,200,0,0.03);">
       <div>
         <div class="news-meta">
           <span class="news-tag" style="background:rgba(0,229,160,0.12);color:var(--green);border:1px solid rgba(0,229,160,0.3);">✓ MISSION SUCCESS</span>
@@ -957,7 +1586,7 @@
     </div>
 
     <!-- VALKYRIE-1B SUCCESS / PHASE II -->
-    <div class="news-featured" style="border-left-color:var(--gold);">
+    <div class="news-featured reveal" style="border-left-color:var(--gold);">
       <div>
         <div class="news-meta">
           <span class="news-tag" style="background:rgba(0,229,160,0.12);color:var(--green);border:1px solid rgba(0,229,160,0.3);">✓ MISSION SUCCESS</span>
@@ -972,7 +1601,7 @@
     </div>
 
     <!-- VALKYRIE-1A SUCCESS -->
-    <div class="news-item" style="border-color:rgba(245,200,0,0.2);background:rgba(245,200,0,0.03);">
+    <div class="news-item reveal" style="border-color:rgba(245,200,0,0.2);background:rgba(245,200,0,0.03);">
       <div>
         <div class="news-meta">
           <span class="news-tag" style="background:rgba(0,229,160,0.12);color:var(--green);border:1px solid rgba(0,229,160,0.3);">✓ MISSION SUCCESS</span>
@@ -986,7 +1615,7 @@
     </div>
 
     <!-- ECOSTRAT-1 RETIRED -->
-    <div class="news-featured" style="border-left-color:var(--text3);">
+    <div class="news-featured reveal" style="border-left-color:var(--text3);">
       <div>
         <div class="news-meta">
           <span class="news-tag" style="background:rgba(90,79,106,0.15);color:var(--text3);border:1px solid rgba(90,79,106,0.35);">◼ OFFICIALLY RETIRED</span>
@@ -1000,7 +1629,7 @@
     </div>
 
     <!-- ECOSTRAT-3 SUCCESS -->
-    <div class="news-featured" style="border-left-color:var(--green);">
+    <div class="news-featured reveal" style="border-left-color:var(--green);">
       <div>
         <div class="news-meta">
           <span class="news-tag" style="background:rgba(0,229,160,0.12);color:var(--green);border:1px solid rgba(0,229,160,0.3);">✓ MISSION SUCCESS</span>
@@ -1014,7 +1643,7 @@
     </div>
 
     <!-- ABLE-2 PARTIAL -->
-    <div class="news-item" style="border-color:rgba(255,170,0,0.2);background:rgba(255,170,0,0.03);">
+    <div class="news-item reveal" style="border-color:rgba(255,170,0,0.2);background:rgba(255,170,0,0.03);">
       <div>
         <div class="news-meta">
           <span class="news-tag" style="background:rgba(255,170,0,0.1);color:var(--gold);border:1px solid rgba(255,170,0,0.3);">⚠ PARTIAL SUCCESS</span>
@@ -1028,7 +1657,7 @@
     </div>
 
     <!-- ABLE-1 SUCCESS -->
-    <div class="news-item" style="border-color:rgba(192,132,252,0.25);background:rgba(192,132,252,0.04);">
+    <div class="news-item reveal" style="border-color:rgba(192,132,252,0.25);background:rgba(192,132,252,0.04);">
       <div>
         <div class="news-meta">
           <span class="news-tag" style="background:rgba(0,229,160,0.12);color:var(--green);border:1px solid rgba(0,229,160,0.3);">✓ MISSION SUCCESS</span>
@@ -1042,7 +1671,7 @@
     </div>
 
     <!-- ECOSTRAT-2 SUCCESS -->
-    <div class="news-item" style="border-color:rgba(0,229,160,0.2);background:rgba(0,229,160,0.03);">
+    <div class="news-item reveal" style="border-color:rgba(0,229,160,0.2);background:rgba(0,229,160,0.03);">
       <div>
         <div class="news-meta">
           <span class="news-tag" style="background:rgba(0,229,160,0.12);color:var(--green);border:1px solid rgba(0,229,160,0.3);">✓ MISSION SUCCESS</span>
@@ -1056,7 +1685,7 @@
     </div>
 
     <!-- ECHOSTAT-0 SUCCESS -->
-    <div class="news-featured">
+    <div class="news-featured reveal">
       <div>
         <div class="news-meta">
           <span class="news-tag" style="background:rgba(0,229,160,0.12);color:var(--green);border:1px solid rgba(0,229,160,0.3);">✓ MISSION SUCCESS</span>
@@ -1070,7 +1699,7 @@
     </div>
 
     <!-- ECHOSTAT-1 SUCCESS -->
-    <div class="news-item" style="border-color:rgba(0,229,160,0.2);background:rgba(0,229,160,0.03);">
+    <div class="news-item reveal" style="border-color:rgba(0,229,160,0.2);background:rgba(0,229,160,0.03);">
       <div>
         <div class="news-meta">
           <span class="news-tag" style="background:rgba(0,229,160,0.12);color:var(--green);border:1px solid rgba(0,229,160,0.3);">✓ MISSION SUCCESS</span>
@@ -1082,7 +1711,7 @@
       </div>
       <span class="news-emoji">🛰</span>
     </div>
-    <div class="news-featured">
+    <div class="news-featured reveal">
       <div>
         <div class="news-meta">
           <span class="news-tag tag-founding">FOUNDING</span>
@@ -1106,7 +1735,7 @@
       <span class="news-emoji">📢</span>
     </div>
 
-    <div class="news-item">
+    <div class="news-item reveal">
       <div>
         <div class="news-meta">
           <span class="news-tag tag-programs">PROGRAMS</span>
@@ -1118,7 +1747,7 @@
       <span class="news-emoji">🚀</span>
     </div>
 
-    <div class="news-item">
+    <div class="news-item reveal">
       <div>
         <div class="news-meta">
           <span class="news-tag tag-safety">SAFETY</span>
@@ -1130,7 +1759,7 @@
       <span class="news-emoji">🛡</span>
     </div>
 
-    <div class="news-item">
+    <div class="news-item reveal">
       <div>
         <div class="news-meta">
           <span class="news-tag tag-personnel">PERSONNEL</span>
@@ -1221,6 +1850,13 @@
       </div>
 
     </div>
+    <div class="stat-bars reveal">
+      <div class="stat-bar-row" data-tip="EcoStrat-0: Crewed spaceflight&#10;EcoStrat-1: Retired&#10;EcoStrat-2: Surface imaging&#10;EcoStrat-3: Nuclear orbit">
+        <span class="stat-bar-label">ECOSTRAT</span>
+        <div class="stat-bar-track"><div class="stat-bar-fill" style="background:var(--green);" data-pct="80"></div></div>
+        <span class="stat-bar-val">4/5</span>
+      </div>
+    </div>
     <div class="prog-end">— ECOSTRAT MANIFEST · 4 COMPLETE · 0 SCHEDULED —</div>
   </div>
 
@@ -1263,6 +1899,13 @@
         <span class="mission-status status-partial">⚠ PARTIAL SUCCESS</span>
       </div>
 
+    </div>
+    <div class="stat-bars reveal">
+      <div class="stat-bar-row" data-tip="ABLE-1: Full success&#10;ABLE-2: Partial success&#10;Reusability confirmed, capability gap identified">
+        <span class="stat-bar-label">ABLE</span>
+        <div class="stat-bar-track"><div class="stat-bar-fill" style="background:#c084fc;" data-pct="50"></div></div>
+        <span class="stat-bar-val">1.5/2</span>
+      </div>
     </div>
     <div class="prog-end" style="border-color:rgba(192,132,252,0.15);color:rgba(192,132,252,0.4);">— ABLE MANIFEST · 1 COMPLETE · 1 PARTIAL SUCCESS · PROGRAMME UNDER REVIEW —</div>
   </div>
@@ -1325,7 +1968,7 @@
         <span class="mission-status status-complete">✓ COMPLETE</span>
       </div>
 
-      <div class="mission-row">
+      <div class="mission-row reveal">
         <div class="mission-dot dot-gold">2B</div>
         <div class="mission-info">
           <div class="mission-title">Valkyrie-2B — First Crewed Mun Orbital</div>
@@ -1340,7 +1983,7 @@
         <span class="mission-status status-scheduled">◌ SCHEDULED · AWAITS 2A SIGN-OFF</span>
       </div>
 
-      <div class="mission-row">
+      <div class="mission-row reveal">
         <div class="mission-dot dot-gold">2C</div>
         <div class="mission-info">
           <div class="mission-title">Valkyrie-2C — Lunar Module Undocking Trial</div>
@@ -1360,7 +2003,7 @@
     <div class="phase-label">// PHASE III — MUN SURFACE OPERATIONS //</div>
     <div class="mission-list">
 
-      <div class="mission-row">
+      <div class="mission-row reveal">
         <div class="mission-dot dot-gold">3A</div>
         <div class="mission-info">
           <div class="mission-title">Valkyrie-3A — First Crewed Mun Landing</div>
@@ -1374,7 +2017,7 @@
         <span class="mission-status status-pending">◌ PENDING · AWAITS 2C SIGN-OFF</span>
       </div>
 
-      <div class="mission-row">
+      <div class="mission-row reveal">
         <div class="mission-dot dot-gold">3B</div>
         <div class="mission-info">
           <div class="mission-title">Valkyrie-3B — Extended EVA &amp; Sample Return</div>
@@ -1389,6 +2032,13 @@
         <span class="mission-status status-pending">◌ PENDING · AWAITS 3A SIGN-OFF</span>
       </div>
 
+    </div>
+    <div class="stat-bars reveal">
+      <div class="stat-bar-row" data-tip="Phase I: 1A✓ 1B✓&#10;Phase II: 2A✓ 2B◌ 2C◌&#10;Phase III: 3A◌ 3B◌">
+        <span class="stat-bar-label">VALKYRIE</span>
+        <div class="stat-bar-track"><div class="stat-bar-fill" style="background:var(--gold);" data-pct="43"></div></div>
+        <span class="stat-bar-val">3/7</span>
+      </div>
     </div>
     <div class="prog-end">— VALKYRIE MANIFEST · 3 COMPLETE · 2 SCHEDULED — PHASE II ACTIVE — PHASE III LAUNCH DATE TBD —</div>
   </div>
@@ -1406,19 +2056,19 @@
   <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:2rem;max-width:680px;">Three principles guide every decision at Horizon Aerospace — from the drawing board to the launchpad. These are not slogans. They are policies. They are what separates Horizon from what came before.</p>
 
   <div class="values-grid">
-    <div class="value-card">
+    <div class="value-card reveal">
       <div class="value-icon">🛡</div>
       <div class="value-num">01 / 03</div>
       <div class="value-name" style="color:var(--green);">SAFETY FIRST</div>
       <p class="value-desc">No launch is worth a Kerbal life. Every vehicle passes a full pre-flight review, independent safety audit, and crew sign-off before fuelling begins. We abort when in doubt. A scrubbed launch is a success.</p>
     </div>
-    <div class="value-card">
+    <div class="value-card reveal">
       <div class="value-icon">📋</div>
       <div class="value-num">02 / 03</div>
       <div class="value-name" style="color:var(--gold);">METICULOUS PLANNING</div>
       <p class="value-desc">We plan in months, not days. Delta-V budgets, contingency windows, abort trajectories, and crew rotation schedules are finalised before a single part is ordered. Every phase is gated on the last.</p>
     </div>
-    <div class="value-card">
+    <div class="value-card reveal">
       <div class="value-icon">🤝</div>
       <div class="value-num">03 / 03</div>
       <div class="value-name" style="color:var(--crimson2);">COOPERATION</div>
@@ -1435,17 +2085,119 @@
     <div class="section-line"></div>
   </div>
 
-  <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:2.5rem;max-width:680px;">We plan. We prepare. We launch only when ready. No date is firm until the preceding phase has been reviewed and cleared. The following schedule reflects current projections — not commitments.</p>
+  <div class="flowchart" style="margin-bottom:3rem;">
+    <!-- EcoStrat -->
+    <div class="flow-phase">
+      <div class="flow-phase-label" style="color:var(--green);">ECOSTRAT — KERBIN ORBITAL</div>
+      <div class="flow-nodes">
+        <div class="flow-node complete reveal" data-tip="EcoStrat-0&#10;First crewed spaceflight&#10;✓ Complete">
+          <div class="flow-node-id" style="color:var(--green);">ES-0</div>
+          <div class="flow-node-name">Crewed Spaceflight</div>
+          <div class="flow-node-status">✓</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node retired reveal" data-tip="EcoStrat-1&#10;Atmospheric monitor&#10;◼ Retired — power failure">
+          <div class="flow-node-id" style="color:var(--text3);">ES-1</div>
+          <div class="flow-node-name">Atmospheric Monitor</div>
+          <div class="flow-node-status" style="color:var(--text3);">◼</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node complete reveal" data-tip="EcoStrat-2&#10;Surface imaging polar orbit&#10;✓ Complete">
+          <div class="flow-node-id" style="color:var(--green);">ES-2</div>
+          <div class="flow-node-name">Surface Imaging</div>
+          <div class="flow-node-status">✓</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node complete reveal" data-tip="EcoStrat-3&#10;Nuclear engine orbit — ES-1 replacement&#10;✓ Complete">
+          <div class="flow-node-id" style="color:var(--green);">ES-3</div>
+          <div class="flow-node-name">Nuclear Orbit</div>
+          <div class="flow-node-status">✓</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-connector"></div>
+
+    <!-- ABLE -->
+    <div class="flow-phase">
+      <div class="flow-phase-label" style="color:#c084fc;">ABLE — ROCKET DESIGN TESTING</div>
+      <div class="flow-nodes">
+        <div class="flow-node complete reveal" data-tip="ABLE-1&#10;Crewed design validation&#10;Jebediah &amp; Greging Kerman&#10;✓ Complete">
+          <div class="flow-node-id" style="color:#c084fc;">A-1</div>
+          <div class="flow-node-name">Design Validation</div>
+          <div class="flow-node-status">✓</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node partial reveal" data-tip="ABLE-2&#10;Reusability feasibility test&#10;⚠ Partial success">
+          <div class="flow-node-id" style="color:var(--gold);">A-2</div>
+          <div class="flow-node-name">Reusability Test</div>
+          <div class="flow-node-status" style="color:var(--gold);">⚠</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-connector"></div>
+
+    <!-- VALKYRIE -->
+    <div class="flow-phase">
+      <div class="flow-phase-label" style="color:var(--gold);">VALKYRIE — MUN PROGRAMME</div>
+      <div class="flow-nodes" style="flex-wrap:wrap;gap:6px;">
+        <div class="flow-node complete reveal" data-tip="Valkyrie-1A&#10;Block I LV test&#10;✓ Complete">
+          <div class="flow-node-id" style="color:var(--gold);">V-1A</div>
+          <div class="flow-node-name">LV Test</div>
+          <div class="flow-node-status">✓</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node complete reveal" data-tip="Valkyrie-1B&#10;Uncrewed CM reentry&#10;✓ Complete — Phase II unlocked">
+          <div class="flow-node-id" style="color:var(--gold);">V-1B</div>
+          <div class="flow-node-name">CM Reentry</div>
+          <div class="flow-node-status">✓</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node complete reveal" data-tip="Valkyrie-2A&#10;First crewed Kerbin orbital&#10;✓ Complete">
+          <div class="flow-node-id" style="color:var(--gold);">V-2A</div>
+          <div class="flow-node-name">Kerbin Orbital</div>
+          <div class="flow-node-status">✓</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node reveal" data-tip="Valkyrie-2B&#10;First crewed Mun orbital&#10;◌ Scheduled">
+          <div class="flow-node-id" style="color:var(--text3);">V-2B</div>
+          <div class="flow-node-name">Mun Orbital</div>
+          <div class="flow-node-status" style="color:var(--text3);">◌</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node reveal" data-tip="Valkyrie-2C&#10;LM undocking trial&#10;◌ Scheduled">
+          <div class="flow-node-id" style="color:var(--text3);">V-2C</div>
+          <div class="flow-node-name">LM Trial</div>
+          <div class="flow-node-status" style="color:var(--text3);">◌</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node reveal" data-tip="Valkyrie-3A&#10;First crewed Mun landing&#10;◌ Pending Phase II">
+          <div class="flow-node-id" style="color:var(--text3);">V-3A</div>
+          <div class="flow-node-name">Mun Landing</div>
+          <div class="flow-node-status" style="color:var(--text3);">◌</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node reveal" data-tip="Valkyrie-3B&#10;Extended EVA &amp; sample return&#10;◌ Pending 3A">
+          <div class="flow-node-id" style="color:var(--text3);">V-3B</div>
+          <div class="flow-node-name">EVA &amp; Samples</div>
+          <div class="flow-node-status" style="color:var(--text3);">◌</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:2.5rem;max-width:680px;">We plan. We prepare. We launch only when ready. No date is firm until the preceding phase has been reviewed and cleared.</p>
 
   <div class="roadmap-grid">
 
-    <div class="roadmap-item founded">
+    <div class="roadmap-item founded reveal">
       <div class="roadmap-date">YEAR 2026 · Q1</div>
       <div class="roadmap-label">Agency Founded — Successor to SlimeX Space Agency</div>
       <p class="roadmap-desc">Horizon Aerospace established at Kerbin Space Center following the full dissolution and reconstitution of SlimeX. New safety doctrine, new program architecture, new identity.</p>
     </div>
 
-    <div class="roadmap-item founded">
+    <div class="roadmap-item founded reveal">
       <div class="roadmap-date">COMPLETE ✓</div>
       <div class="roadmap-label">EcoStrat-0 — First Crewed Spaceflight</div>
       <p class="roadmap-desc">Horizon's first crewed mission. Kerbonauts reached space and returned safely. All objectives met. Crew in good health. Historic first for the agency.</p>
@@ -1457,25 +2209,25 @@
       <p class="roadmap-desc">Deployed to equatorial orbit. Suffered repeated power failures on the dark side of Kerbin due to insufficient power storage and limited solar arrays. Served as a temporary achievement and survey platform. Officially retired and decommissioned. Data archived.</p>
     </div>
 
-    <div class="roadmap-item founded">
+    <div class="roadmap-item founded reveal">
       <div class="roadmap-date">COMPLETE ✓</div>
       <div class="roadmap-label">ABLE-1 — Rocket Design Validation Flight</div>
       <p class="roadmap-desc">Crewed by Jebediah Kerman and Greging Kerman. Full design profile flown. Crew landed successfully outside KSC. All objectives met. ABLE-2 iteration planning underway.</p>
     </div>
 
-    <div class="roadmap-item founded">
+    <div class="roadmap-item founded reveal">
       <div class="roadmap-date">COMPLETE ✓</div>
       <div class="roadmap-label">Valkyrie-1A · Block I Launch Vehicle Test</div>
       <p class="roadmap-desc">Uncrewed. Full ascent profile and stage separation validated. Stack confirmed flight-worthy. Valkyrie-1B now unlocked.</p>
     </div>
 
-    <div class="roadmap-item founded">
+    <div class="roadmap-item founded reveal">
       <div class="roadmap-date">COMPLETE ✓</div>
       <div class="roadmap-label">EcoStrat-2 — High-Resolution Surface Imaging Satellite</div>
       <p class="roadmap-desc">Polar orbit achieved. Full Kerbin surface mapping campaign active. All instruments nominal.</p>
     </div>
 
-    <div class="roadmap-item founded">
+    <div class="roadmap-item founded reveal">
       <div class="roadmap-date">COMPLETE ✓ — PHASE II INITIATED</div>
       <div class="roadmap-label">Valkyrie-1B · Uncrewed CM Reentry Test</div>
       <p class="roadmap-desc">Heat shield validated at lunar-return velocity. Splashdown confirmed. Crew certification unlocked. Phase I closed — Phase II now active.</p>
@@ -1487,31 +2239,31 @@
       <p class="roadmap-desc">Confirmed reusable rockets are achievable. Also confirmed Horizon does not yet have the capability to implement them safely. Programme under review. EcoStrat-3 delayed as a direct result.</p>
     </div>
 
-    <div class="roadmap-item founded">
+    <div class="roadmap-item founded reveal">
       <div class="roadmap-date">COMPLETE ✓</div>
       <div class="roadmap-label">EcoStrat-3 — Advanced Atmospheric &amp; Weather Monitor</div>
       <p class="roadmap-desc">First satellite to reach orbit using nuclear engines. Full replacement for EcoStrat-1. Dual redundant power systems ensure uninterrupted dark-side operation. All sensors nominal.</p>
     </div>
 
-    <div class="roadmap-item founded">
+    <div class="roadmap-item founded reveal">
       <div class="roadmap-date">COMPLETE ✓</div>
       <div class="roadmap-label">Valkyrie-2A · First Crewed Kerbin Orbital</div>
       <p class="roadmap-desc">Crew of two. 3-day Kerbin orbital shakedown complete. CM systems and crew performance confirmed nominal. Valkyrie-2B now unlocked.</p>
     </div>
 
-    <div class="roadmap-item">
+    <div class="roadmap-item reveal">
       <div class="roadmap-date">YEAR 2028 · Q3 — SCHEDULED</div>
       <div class="roadmap-label">Valkyrie-2B · First Crewed Mun Orbital</div>
       <p class="roadmap-desc">Crew of two in Mun orbit for 6 days. Reconnaissance of landing sites. No descent.</p>
     </div>
 
-    <div class="roadmap-item">
+    <div class="roadmap-item reveal">
       <div class="roadmap-date">YEAR 2028 · Q4 — SCHEDULED</div>
       <div class="roadmap-label">Valkyrie-2C · Lunar Module Undocking Trial</div>
       <p class="roadmap-desc">Full LM separation, powered descent burn, and re-docking rehearsal in Mun orbit. Crew of three. No landing. Phase III gated on this result.</p>
     </div>
 
-    <div class="roadmap-item">
+    <div class="roadmap-item reveal">
       <div class="roadmap-date">YEAR 2029 · TBD — PENDING PHASE II SIGN-OFF</div>
       <div class="roadmap-label">Valkyrie-3A · First Crewed Mun Landing</div>
       <p class="roadmap-desc">No launch date set until Phase II review board provides full clearance. Two Kerbonauts descend to the Mun surface. One remains in orbit.</p>
@@ -1520,10 +2272,77 @@
   </div>
 </section>
 
-<!-- SECTION 05 · CAREERS -->
-<section class="section" id="careers">
+<!-- SECTION 05 · KERBONAUTS -->
+<section class="section reveal" id="kerbonauts">
   <div class="section-header">
     <span class="section-num">05</span>
+    <h2 class="section-title">KERBONAUT ROSTER</h2>
+    <div class="section-line"></div>
+  </div>
+  <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:2rem;max-width:680px;">Certified flight crew of Horizon Aerospace. All personnel have completed the Horizon Safety Certification Programme prior to mission assignment.</p>
+  <div class="kerbonaut-grid">
+
+    <div class="kerb-card reveal" data-tip="First Horizon Kerbonaut to fly&#10;ABLE-1 mission commander">
+      <div class="kerb-avatar" style="background:rgba(245,200,0,0.1);border-color:rgba(245,200,0,0.4);color:var(--gold);">🧑‍🚀</div>
+      <div class="kerb-name">Jebediah Kerman</div>
+      <div class="kerb-status" style="color:var(--green);">● ACTIVE — CERTIFIED</div>
+      <div class="kerb-missions">
+        <div class="kerb-mission">ABLE-1 · Design Validation · ✓ Complete</div>
+      </div>
+    </div>
+
+    <div class="kerb-card reveal" data-tip="ABLE-1 co-pilot&#10;Landed outside KSC with Jebediah">
+      <div class="kerb-avatar" style="background:rgba(245,200,0,0.1);border-color:rgba(245,200,0,0.4);color:var(--gold);">🧑‍🚀</div>
+      <div class="kerb-name">Greging Kerman</div>
+      <div class="kerb-status" style="color:var(--green);">● ACTIVE — CERTIFIED</div>
+      <div class="kerb-missions">
+        <div class="kerb-mission">ABLE-1 · Design Validation · ✓ Complete</div>
+      </div>
+    </div>
+
+    <div class="kerb-card reveal" data-tip="Valkyrie-2A crew member&#10;First crewed Kerbin orbital">
+      <div class="kerb-avatar" style="background:rgba(192,132,252,0.1);border-color:rgba(192,132,252,0.4);color:#c084fc;">🧑‍🚀</div>
+      <div class="kerb-name">Valentina Kerman</div>
+      <div class="kerb-status" style="color:var(--green);">● ACTIVE — CERTIFIED</div>
+      <div class="kerb-missions">
+        <div class="kerb-mission">Valkyrie-2A · Kerbin Orbital · ✓ Complete</div>
+      </div>
+    </div>
+
+    <div class="kerb-card reveal" data-tip="Valkyrie-2A crew member&#10;First crewed Kerbin orbital">
+      <div class="kerb-avatar" style="background:rgba(192,132,252,0.1);border-color:rgba(192,132,252,0.4);color:#c084fc;">🧑‍🚀</div>
+      <div class="kerb-name">Bill Kerman</div>
+      <div class="kerb-status" style="color:var(--green);">● ACTIVE — CERTIFIED</div>
+      <div class="kerb-missions">
+        <div class="kerb-mission">Valkyrie-2A · Kerbin Orbital · ✓ Complete</div>
+      </div>
+    </div>
+
+    <div class="kerb-card reveal" data-tip="EcoStrat-0 crew member&#10;One of first Kerbonauts to reach space">
+      <div class="kerb-avatar" style="background:rgba(0,229,160,0.1);border-color:rgba(0,229,160,0.4);color:var(--green);">🧑‍🚀</div>
+      <div class="kerb-name">Bob Kerman</div>
+      <div class="kerb-status" style="color:var(--green);">● ACTIVE — CERTIFIED</div>
+      <div class="kerb-missions">
+        <div class="kerb-mission">EcoStrat-0 · First Crewed Flight · ✓ Complete</div>
+      </div>
+    </div>
+
+    <div class="kerb-card reveal" data-tip="EcoStrat-0 crew member&#10;One of first Kerbonauts to reach space">
+      <div class="kerb-avatar" style="background:rgba(0,229,160,0.1);border-color:rgba(0,229,160,0.4);color:var(--green);">🧑‍🚀</div>
+      <div class="kerb-name">Thomrod Kerman</div>
+      <div class="kerb-status" style="color:var(--green);">● ACTIVE — CERTIFIED</div>
+      <div class="kerb-missions">
+        <div class="kerb-mission">EcoStrat-0 · First Crewed Flight · ✓ Complete</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SECTION 06 · CAREERS -->
+<section class="section" id="careers">
+  <div class="section-header">
+    <span class="section-num">06</span>
     <h2 class="section-title">CAREERS AT HORIZON</h2>
     <div class="section-line"></div>
   </div>
@@ -1732,74 +2551,201 @@
 </footer>
 
 <script>
-  let selectedRole = '';
+  // ── LOADING SCREEN ──
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const loader = document.getElementById('loader');
+      loader.classList.add('fade');
+      setTimeout(() => loader.style.display = 'none', 900);
+    }, 2200);
+  });
 
-  function selectJob(card, role) {
-    // Deselect all cards
-    document.querySelectorAll('.job-card').forEach(c => c.classList.remove('selected'));
-    // Select this card
-    card.classList.add('selected');
-    selectedRole = role;
-    // Sync the dropdown
-    const dropdown = document.getElementById('appRole');
-    for (let i = 0; i < dropdown.options.length; i++) {
-      if (dropdown.options[i].text === role) {
-        dropdown.selectedIndex = i;
-        break;
-      }
-    }
-    // Show selected role banner
-    const banner = document.getElementById('selectedRoleDisplay');
-    banner.textContent = '✓ SELECTED ROLE: ' + role.toUpperCase();
-    banner.classList.add('visible');
-    // Scroll to form
-    document.querySelector('.apply-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // ── ANIMATED STARFIELD CANVAS ──
+  const canvas = document.getElementById('starCanvas');
+  const ctx = canvas.getContext('2d');
+  let stars = [], W, H;
+
+  function resizeCanvas() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
   }
 
-  // Keep card selection in sync if user uses the dropdown
-  document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('appRole').addEventListener('change', function() {
-      const role = this.value;
-      document.querySelectorAll('.job-card').forEach(c => {
-        c.classList.remove('selected');
-        if (c.dataset.role === role) c.classList.add('selected');
+  function initStars() {
+    stars = [];
+    for (let i = 0; i < 320; i++) {
+      stars.push({
+        x: Math.random() * W, y: Math.random() * H,
+        r: Math.random() * 1.5 + 0.2,
+        a: Math.random() * 0.8 + 0.1,
+        speed: Math.random() * 0.015 + 0.003,
+        phase: Math.random() * Math.PI * 2,
+        vx: (Math.random() - 0.5) * 0.06,
+        vy: (Math.random() - 0.5) * 0.06
       });
-      if (role) {
-        selectedRole = role;
-        const banner = document.getElementById('selectedRoleDisplay');
-        banner.textContent = '✓ SELECTED ROLE: ' + role.toUpperCase();
-        banner.classList.add('visible');
+    }
+  }
+
+  function drawStars(t) {
+    ctx.clearRect(0, 0, W, H);
+    stars.forEach(s => {
+      s.phase += s.speed;
+      s.x += s.vx; s.y += s.vy;
+      if (s.x < 0) s.x = W; if (s.x > W) s.x = 0;
+      if (s.y < 0) s.y = H; if (s.y > H) s.y = 0;
+      const a = s.a * (0.5 + 0.5 * Math.sin(s.phase));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(220,210,255,${a})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(drawStars);
+  }
+
+  resizeCanvas(); initStars(); requestAnimationFrame(drawStars);
+  window.addEventListener('resize', () => { resizeCanvas(); initStars(); });
+
+  // ── PARALLAX ──
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    const hero = document.querySelector('.hero');
+    if (hero) hero.style.transform = `translateY(${y * 0.3}px)`;
+    canvas.style.transform = `translateY(${y * 0.12}px)`;
+  });
+
+  // ── ROCKET LAUNCH ──
+  const rocket = document.getElementById('rocket');
+  let rocketActive = false;
+
+  function launchRocket() {
+    if (rocketActive) return;
+    rocketActive = true;
+    const startX = -80;
+    const startY = window.innerHeight + 80;
+    const endX = window.innerWidth + 80;
+    const endY = -80;
+    rocket.style.transition = 'none';
+    rocket.style.left = startX + 'px';
+    rocket.style.bottom = 'auto';
+    rocket.style.top = startY + 'px';
+    rocket.style.transform = 'rotate(-45deg)';
+    rocket.style.opacity = '1';
+    setTimeout(() => {
+      rocket.style.transition = `left 3.5s cubic-bezier(.2,0,.8,1), top 3.5s cubic-bezier(.2,0,.8,1)`;
+      rocket.style.left = endX + 'px';
+      rocket.style.top = endY + 'px';
+    }, 50);
+    setTimeout(() => {
+      rocket.style.opacity = '0';
+      setTimeout(() => { rocketActive = false; }, 500);
+    }, 3400);
+  }
+
+  // Random rocket launch every 45-90 seconds
+  function scheduleRocket() {
+    const delay = 45000 + Math.random() * 45000;
+    setTimeout(() => { launchRocket(); scheduleRocket(); }, delay);
+  }
+  setTimeout(() => { launchRocket(); scheduleRocket(); }, 8000);
+
+  // ── DARK / LIGHT MODE ──
+  function toggleTheme() {
+    document.body.classList.toggle('light-mode');
+    const btn = document.getElementById('themeBtn');
+    btn.textContent = document.body.classList.contains('light-mode') ? '🌙 DARK' : '☀ LIGHT';
+  }
+
+  // ── SCROLL REVEAL ──
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 60);
+        revealObs.unobserve(e.target);
+        // Animate stat bar fills
+        e.target.querySelectorAll('.stat-bar-fill[data-pct]').forEach(bar => {
+          bar.style.width = bar.dataset.pct + '%';
+        });
       }
+    });
+  }, { threshold: 0.08 });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+    // Also animate any stat bars already visible
+    document.querySelectorAll('.stat-bar-fill[data-pct]').forEach(bar => {
+      const obs = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) { bar.style.width = bar.dataset.pct + '%'; obs.disconnect(); }
+      }, {threshold: 0.1});
+      obs.observe(bar);
     });
   });
 
-  function submitApplication() {
-    const name    = document.getElementById('appName').value.trim();
-    const email   = document.getElementById('appEmail').value.trim();
-    const role    = document.getElementById('appRole').value;
-    const exp     = document.getElementById('appExp').value;
-    const cover   = document.getElementById('appCover').value.trim();
+  // ── MISSION CLOCK (since Y2026 Day 1 = Jan 1 2026) ──
+  const agencyStart = new Date('2026-01-01T00:00:00Z');
+  function updateClock() {
+    const now = new Date();
+    const diff = Math.max(0, now - agencyStart);
+    const totalSec = Math.floor(diff / 1000);
+    const s = totalSec % 60;
+    const m = Math.floor(totalSec / 60) % 60;
+    const h = Math.floor(totalSec / 3600) % 24;
+    const d = Math.floor(totalSec / 86400);
+    document.getElementById('ck-d').textContent = String(d).padStart(3,'0');
+    document.getElementById('ck-h').textContent = String(h).padStart(2,'0');
+    document.getElementById('ck-m').textContent = String(m).padStart(2,'0');
+    document.getElementById('ck-s').textContent = String(s).padStart(2,'0');
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
 
-    if (!name || !email || !role) {
-      alert('Please fill in your name, email, and select a position before submitting.');
-      return;
+  // ── JOB CARD SELECT ──
+  let selectedRole = '';
+  function selectJob(card, role) {
+    document.querySelectorAll('.job-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    selectedRole = role;
+    const dropdown = document.getElementById('appRole');
+    for (let i = 0; i < dropdown.options.length; i++) {
+      if (dropdown.options[i].text === role) { dropdown.selectedIndex = i; break; }
     }
+    const banner = document.getElementById('selectedRoleDisplay');
+    banner.textContent = '✓ SELECTED ROLE: ' + role.toUpperCase();
+    banner.classList.add('visible');
+    document.querySelector('.apply-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 
+  document.addEventListener('DOMContentLoaded', () => {
+    const roleDropdown = document.getElementById('appRole');
+    if (roleDropdown) {
+      roleDropdown.addEventListener('change', function() {
+        const role = this.value;
+        document.querySelectorAll('.job-card').forEach(c => {
+          c.classList.remove('selected');
+          if (c.dataset.role === role) c.classList.add('selected');
+        });
+        if (role) {
+          selectedRole = role;
+          const banner = document.getElementById('selectedRoleDisplay');
+          banner.textContent = '✓ SELECTED ROLE: ' + role.toUpperCase();
+          banner.classList.add('visible');
+        }
+      });
+    }
+  });
+
+  function submitApplication() {
+    const name  = document.getElementById('appName').value.trim();
+    const email = document.getElementById('appEmail').value.trim();
+    const role  = document.getElementById('appRole').value;
+    const exp   = document.getElementById('appExp').value;
+    const cover = document.getElementById('appCover').value.trim();
+    if (!name || !email || !role) { alert('Please fill in your name, email, and select a position before submitting.'); return; }
     const subject = encodeURIComponent('Horizon Aerospace Job Application — ' + role);
     const body = encodeURIComponent(
-      'HORIZON AEROSPACE — JOB APPLICATION\n' +
-      '=====================================\n\n' +
-      'Name:        ' + name + '\n' +
-      'Email:       ' + email + '\n' +
-      'Position:    ' + role + '\n' +
-      'Experience:  ' + (exp || 'Not specified') + '\n\n' +
-      '--- Cover Letter ---\n' +
-      (cover || '(No cover letter provided)') + '\n\n' +
-      '=====================================\n' +
-      'Submitted via Horizon Aerospace Careers Portal\n' +
-      'Republic of Retardia · Kerbin Space Center'
+      'HORIZON AEROSPACE — JOB APPLICATION\n=====================================\n\n' +
+      'Name:        ' + name + '\nEmail:       ' + email + '\nPosition:    ' + role +
+      '\nExperience:  ' + (exp || 'Not specified') + '\n\n--- Cover Letter ---\n' +
+      (cover || '(No cover letter provided)') + '\n\n=====================================\nSubmitted via Horizon Aerospace Careers Portal\nRepublic of Retardia · Kerbin Space Center'
     );
-
     window.location.href = 'mailto:kohanyodubya@gmail.com?subject=' + subject + '&body=' + body;
   }
 </script>
