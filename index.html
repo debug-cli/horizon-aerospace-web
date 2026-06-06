@@ -1124,216 +1124,176 @@
     margin-top: 10px;
     line-height: 1.6;
   }
-  /* ── MUSIC PLAYER ── */
-  .music-btn {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    color: var(--text3);
-    background: transparent;
-    border: 1px solid var(--border);
-    padding: 5px 12px;
-    cursor: pointer;
-    transition: color 0.2s, border-color 0.2s;
-    border-radius: 2px;
+
+  /* ── AURORA ── */
+  #aurora {
+    position: absolute; left:0; right:0; top:0; height:100vh;
+    z-index:0; pointer-events:none; overflow:hidden;
   }
-  .music-btn:hover { color: var(--gold); border-color: rgba(245,200,0,0.3); }
-  .music-btn.playing { color: var(--gold); border-color: rgba(245,200,0,0.4); background: rgba(245,200,0,0.05); }
-  .music-btn .btn-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--text3);
-    transition: background 0.2s;
-    flex-shrink: 0;
+  .aurora-band {
+    position:absolute; left:-20%; width:140%; height:280px;
+    border-radius:50%; filter:blur(60px); opacity:0.13;
+    animation: aurora-drift linear infinite;
   }
-  .music-btn.playing .btn-dot {
-    background: var(--gold);
-    animation: pulse-dot 1.2s ease-in-out infinite;
+  @keyframes aurora-drift {
+    0%   { transform: translateX(-5%) translateY(0px) scaleX(1); }
+    50%  { transform: translateX(5%)  translateY(40px) scaleX(1.05); }
+    100% { transform: translateX(-5%) translateY(0px) scaleX(1); }
   }
 
-  #music-player {
-    position: fixed;
-    bottom: 1.5rem;
-    right: 1.5rem;
-    z-index: 200;
-    width: 300px;
-    background: var(--bg2);
-    border: 1px solid var(--border2);
-    border-radius: 4px;
-    overflow: hidden;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.6);
-    display: none;
-    flex-direction: column;
+  /* ── MISSION MODAL ── */
+  #missionModal {
+    position:fixed; inset:0; z-index:8000;
+    background:rgba(0,0,0,0.85); backdrop-filter:blur(6px);
+    display:none; align-items:center; justify-content:center;
+    padding:1rem;
   }
-  #music-player.open { display: flex; }
+  #missionModal.open { display:flex; }
+  .modal-box {
+    background:var(--bg2); border:1px solid var(--border2);
+    border-radius:4px; max-width:600px; width:100%;
+    max-height:90vh; overflow-y:auto;
+    box-shadow:0 20px 60px rgba(0,0,0,0.8);
+    animation: modal-in 0.3s ease;
+  }
+  @keyframes modal-in {
+    from { opacity:0; transform:scale(0.94) translateY(20px); }
+    to   { opacity:1; transform:scale(1)    translateY(0); }
+  }
+  .modal-header {
+    display:flex; align-items:flex-start; justify-content:space-between;
+    padding:1.5rem; border-bottom:1px solid var(--border);
+  }
+  .modal-id {
+    font-family:'Orbitron',monospace; font-size:10px; font-weight:700;
+    letter-spacing:0.3em; color:var(--text3); margin-bottom:6px;
+  }
+  .modal-title { font-family:'Orbitron',monospace; font-size:18px; font-weight:900; color:var(--text); }
+  .modal-close {
+    font-size:18px; color:var(--text3); cursor:pointer;
+    background:none; border:none; padding:0 4px; flex-shrink:0; margin-top:4px;
+    transition:color 0.2s;
+  }
+  .modal-close:hover { color:var(--text); }
+  .modal-body { padding:1.5rem; display:flex; flex-direction:column; gap:1.25rem; }
+  .modal-patch { display:flex; justify-content:center; margin-bottom:0.5rem; }
+  .modal-patch canvas { border-radius:50%; box-shadow:0 0 30px rgba(245,200,0,0.2); }
+  .modal-field label {
+    font-family:'Space Mono',monospace; font-size:9px; color:var(--text3);
+    letter-spacing:0.2em; display:block; margin-bottom:5px;
+  }
+  .modal-field p { font-size:13px; color:var(--text2); line-height:1.7; }
+  .modal-chips { display:flex; flex-wrap:wrap; gap:5px; }
+  .modal-budget {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:10px 14px; background:var(--bg3); border:1px solid var(--border); border-radius:2px;
+  }
+  .modal-budget-label { font-family:'Space Mono',monospace; font-size:9px; color:var(--text3); letter-spacing:0.15em; }
+  .modal-budget-val   { font-family:'Orbitron',monospace; font-size:16px; font-weight:700; color:var(--gold); }
 
-  .player-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 14px;
-    background: var(--bg3);
-    border-bottom: 1px solid var(--border);
+  /* ── LAUNCH SEQUENCE ── */
+  #launchOverlay {
+    position:fixed; inset:0; z-index:9000;
+    background:#000; display:none; flex-direction:column;
+    align-items:center; justify-content:center;
+    font-family:'Orbitron',monospace;
   }
-  .player-title {
-    font-family: 'Orbitron', monospace;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    color: var(--gold);
+  #launchOverlay.open { display:flex; }
+  #launchCountNum {
+    font-size:clamp(80px,20vw,180px); font-weight:900; color:var(--gold);
+    text-shadow:0 0 60px rgba(245,200,0,0.6);
+    animation: count-pulse 1s ease-in-out;
   }
-  .player-close {
-    font-family: 'Space Mono', monospace;
-    font-size: 12px;
-    color: var(--text3);
-    cursor: pointer;
-    background: none;
-    border: none;
-    padding: 0 4px;
-    transition: color 0.2s;
+  @keyframes count-pulse {
+    0%   { transform:scale(1.3); opacity:0; }
+    40%  { transform:scale(1);   opacity:1; }
+    80%  { transform:scale(1);   opacity:1; }
+    100% { transform:scale(0.9); opacity:0; }
   }
-  .player-close:hover { color: var(--text); }
+  #launchMissionName {
+    font-size:14px; letter-spacing:0.3em; color:var(--text2);
+    margin-bottom:2rem; text-align:center;
+  }
+  #launchRocketAnim {
+    font-size:72px; margin-top:1.5rem;
+    transition: transform 2s ease-in, opacity 1s ease-in;
+  }
+  #launchRocketAnim.liftoff {
+    transform: translateY(-60vh) scale(0.2);
+    opacity:0;
+  }
+  #launchSkip {
+    position:absolute; bottom:2rem; right:2rem;
+    font-family:'Space Mono',monospace; font-size:10px;
+    color:var(--text3); background:none; border:1px solid var(--border);
+    padding:6px 14px; cursor:pointer; letter-spacing:0.1em; border-radius:2px;
+    transition:color 0.2s;
+  }
+  #launchSkip:hover { color:var(--text); }
 
-  .player-now {
-    padding: 12px 14px 8px;
-    border-bottom: 1px solid var(--border);
-  }
-  .player-now-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 9px;
-    color: var(--text3);
-    letter-spacing: 0.2em;
-    margin-bottom: 4px;
-  }
-  .player-now-track {
-    font-family: 'Orbitron', monospace;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  /* ── TYPEWRITER ── */
+  .typewriter { border-right:2px solid var(--gold); white-space:nowrap; overflow:hidden; width:0; }
+  .typewriter.typed { border-right:none; width:auto; }
 
-  .player-progress-wrap {
-    padding: 6px 14px 10px;
-    border-bottom: 1px solid var(--border);
+  /* ── ORG CHART ── */
+  .org-chart { display:flex; flex-direction:column; align-items:center; gap:0; }
+  .org-level { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; position:relative; padding:12px 0; }
+  .org-node {
+    background:var(--bg2); border:1px solid var(--border);
+    border-radius:3px; padding:10px 16px; text-align:center;
+    min-width:140px; transition:border-color 0.2s, transform 0.2s;
   }
-  .player-progress-bar {
-    width: 100%;
-    height: 3px;
-    background: var(--border);
-    border-radius: 2px;
-    cursor: pointer;
-    position: relative;
-    margin-bottom: 5px;
-  }
-  .player-progress-fill {
-    height: 100%;
-    background: var(--gold);
-    border-radius: 2px;
-    width: 0%;
-    pointer-events: none;
-    transition: width 0.5s linear;
-  }
-  .player-time {
-    display: flex;
-    justify-content: space-between;
-    font-family: 'Space Mono', monospace;
-    font-size: 9px;
-    color: var(--text3);
-  }
+  .org-node:hover { border-color:var(--gold); transform:translateY(-2px); }
+  .org-node.top { border-color:rgba(245,200,0,0.4); background:rgba(245,200,0,0.04); min-width:200px; }
+  .org-name { font-family:'Orbitron',monospace; font-size:11px; font-weight:700; color:var(--text); margin-bottom:3px; }
+  .org-role { font-family:'Space Mono',monospace; font-size:9px; color:var(--text3); letter-spacing:0.12em; }
+  .org-connector { width:1px; height:18px; background:var(--border); margin:0 auto; }
+  .org-h-line { height:1px; background:var(--border); flex:1; align-self:center; max-width:60px; }
 
-  .player-controls {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    padding: 10px 14px;
-    border-bottom: 1px solid var(--border);
+  /* ── BUDGET ── */
+  .budget-table { width:100%; border-collapse:collapse; }
+  .budget-table th {
+    font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.2em;
+    color:var(--text3); padding:6px 12px; text-align:left;
+    border-bottom:1px solid var(--border2); background:var(--bg3);
   }
-  .ctrl-btn {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    color: var(--text2);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 4px 8px;
-    transition: color 0.2s;
-    letter-spacing: 0.05em;
+  .budget-table td {
+    font-family:'Space Mono',monospace; font-size:11px;
+    padding:8px 12px; border-bottom:1px solid var(--border);
+    color:var(--text2);
   }
-  .ctrl-btn:hover { color: var(--gold); }
-  .ctrl-btn.play-pause {
-    font-size: 16px;
-    color: var(--gold);
-    border: 1px solid rgba(245,200,0,0.3);
-    border-radius: 50%;
-    width: 36px; height: 36px;
-    display: flex; align-items: center; justify-content: center;
-    padding: 0;
-  }
-  .ctrl-btn.play-pause:hover { background: rgba(245,200,0,0.1); }
+  .budget-table td.funds { color:var(--gold); font-family:'Orbitron',monospace; font-size:12px; font-weight:700; }
+  .budget-table td.status-cell { font-size:10px; }
+  .budget-total-row td { color:var(--text); font-weight:700; border-top:1px solid var(--border2); }
 
-  .player-volume {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 14px 10px;
-    border-bottom: 1px solid var(--border);
+  /* ── CLASSIFIED ── */
+  .classified-block {
+    background:var(--bg2); border:1px solid var(--border);
+    border-left:3px solid var(--crimson); border-radius:2px;
+    padding:1.5rem; margin-bottom:1rem;
   }
-  .vol-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 9px;
-    color: var(--text3);
-    letter-spacing: 0.15em;
-    flex-shrink: 0;
+  .classified-label {
+    font-family:'Orbitron',monospace; font-size:10px; font-weight:900;
+    color:var(--crimson2); letter-spacing:0.3em; margin-bottom:0.75rem;
   }
-  input[type=range].vol-slider {
-    flex: 1;
-    height: 3px;
-    accent-color: var(--gold);
-    cursor: pointer;
+  .redacted {
+    background:var(--text); color:var(--text); border-radius:2px;
+    cursor:pointer; transition:background 0.4s, color 0.4s;
+    user-select:none;
   }
+  .redacted:hover, .redacted.revealed { background:transparent; color:var(--text2); }
 
-  .player-tracklist {
-    max-height: 180px;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--border) transparent;
+  /* ── KEYBOARD SHORTCUT TOAST ── */
+  #kbToast {
+    position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%);
+    background:var(--bg2); border:1px solid var(--border2);
+    font-family:'Space Mono',monospace; font-size:11px; color:var(--text2);
+    padding:8px 18px; border-radius:3px; z-index:7000;
+    opacity:0; pointer-events:none; transition:opacity 0.3s;
+    letter-spacing:0.1em;
   }
-  .track-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 7px 14px;
-    cursor: pointer;
-    transition: background 0.15s;
-    border-bottom: 1px solid var(--border);
-  }
-  .track-item:last-child { border-bottom: none; }
-  .track-item:hover { background: rgba(245,200,0,0.04); }
-  .track-item.active { background: rgba(245,200,0,0.07); }
-  .track-num {
-    font-family: 'Space Mono', monospace;
-    font-size: 9px;
-    color: var(--text3);
-    width: 16px;
-    flex-shrink: 0;
-  }
-  .track-item.active .track-num { color: var(--gold); }
-  .track-name {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    color: var(--text2);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    flex: 1;
-  }
-  .track-item.active .track-name { color: var(--gold); }
+  #kbToast.show { opacity:1; }
+
 </style>
 </head>
 <body>
@@ -1449,6 +1409,11 @@
 
 <!-- HERO -->
 <div class="hero" style="position:relative;z-index:1;">
+  <div id="aurora">
+    <div class="aurora-band" style="top:0%;background:linear-gradient(135deg,#4a9eff,#7b4fff);animation-duration:18s;animation-delay:0s;"></div>
+    <div class="aurora-band" style="top:15%;background:linear-gradient(135deg,#00e5a0,#4a9eff);animation-duration:24s;animation-delay:-6s;"></div>
+    <div class="aurora-band" style="top:35%;background:linear-gradient(135deg,#9b1c3a,#f5c800);animation-duration:20s;animation-delay:-10s;opacity:0.08;"></div>
+  </div>
   <div class="hero-flag">
     <!-- Large flag emblem -->
     <svg viewBox="0 0 220 148" xmlns="http://www.w3.org/2000/svg">
@@ -1539,7 +1504,7 @@
     <div class="clock-unit"><div class="clock-val" id="ck-m">00</div><div class="clock-label">MIN</div></div>
     <div class="clock-unit"><div class="clock-val" id="ck-s">00</div><div class="clock-label">SEC</div></div>
   </div>
-  <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:0.2em;text-align:center;margin-top:6px;">AGENCY AGE — SINCE Y2026 DAY 001</div>
+  <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:0.2em;text-align:center;margin-top:6px;">AGENCY AGE — SINCE Y2026 DAY 144 · 24 MAY 2026</div>
 
   <!-- Leadership bar -->
   <div class="leadership-bar" style="margin-top:2rem;">
@@ -2192,7 +2157,7 @@
   <div class="roadmap-grid">
 
     <div class="roadmap-item founded reveal">
-      <div class="roadmap-date">YEAR 2026 · Q1</div>
+      <div class="roadmap-date">24 MAY 2026 — FOUNDING</div>
       <div class="roadmap-label">Agency Founded — Successor to SlimeX Space Agency</div>
       <p class="roadmap-desc">Horizon Aerospace established at Kerbin Space Center following the full dissolution and reconstitution of SlimeX. New safety doctrine, new program architecture, new identity.</p>
     </div>
@@ -2339,11 +2304,121 @@
   </div>
 </section>
 
-<!-- SECTION 06 · CAREERS -->
-<section class="section" id="careers">
+<!-- SECTION 06 · BUDGET -->
+<section class="section" id="budget">
   <div class="section-header">
     <span class="section-num">06</span>
-    <h2 class="section-title">CAREERS AT HORIZON</h2>
+    <h2 class="section-title typewriter" data-text="MISSION BUDGET TRACKER">MISSION BUDGET TRACKER</h2>
+    <div class="section-line"></div>
+  </div>
+  <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:2rem;max-width:680px;">Operational expenditure across all Horizon Aerospace programmes. Figures in thousands of Republic of Retardia Credits (RRC). All figures are approximate and subject to Safety Review Board audit.</p>
+  <table class="budget-table reveal">
+    <thead>
+      <tr>
+        <th>MISSION</th><th>PROGRAMME</th><th>EXPENDITURE (RRC k)</th><th>STATUS</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>EcoStrat-0</td><td>ECOSTRAT</td><td class="funds">₭ 142,000</td><td class="status-cell" style="color:var(--green);">✓ Complete</td></tr>
+      <tr><td>EcoStrat-1</td><td>ECOSTRAT</td><td class="funds">₭ 87,500</td><td class="status-cell" style="color:var(--text3);">◼ Retired</td></tr>
+      <tr><td>EcoStrat-2</td><td>ECOSTRAT</td><td class="funds">₭ 94,200</td><td class="status-cell" style="color:var(--green);">✓ Complete</td></tr>
+      <tr><td>EcoStrat-3</td><td>ECOSTRAT</td><td class="funds">₭ 318,000</td><td class="status-cell" style="color:var(--green);">✓ Complete</td></tr>
+      <tr><td>ABLE-1</td><td>ABLE</td><td class="funds">₭ 203,000</td><td class="status-cell" style="color:var(--green);">✓ Complete</td></tr>
+      <tr><td>ABLE-2</td><td>ABLE</td><td class="funds">₭ 215,000</td><td class="status-cell" style="color:var(--gold);">⚠ Partial</td></tr>
+      <tr><td>Valkyrie-1A</td><td>VALKYRIE</td><td class="funds">₭ 540,000</td><td class="status-cell" style="color:var(--green);">✓ Complete</td></tr>
+      <tr><td>Valkyrie-1B</td><td>VALKYRIE</td><td class="funds">₭ 480,000</td><td class="status-cell" style="color:var(--green);">✓ Complete</td></tr>
+      <tr><td>Valkyrie-2A</td><td>VALKYRIE</td><td class="funds">₭ 620,000</td><td class="status-cell" style="color:var(--green);">✓ Complete</td></tr>
+      <tr><td>Valkyrie-2B</td><td>VALKYRIE</td><td class="funds">₭ 680,000</td><td class="status-cell" style="color:var(--text3);">◌ Scheduled</td></tr>
+      <tr><td>Valkyrie-2C</td><td>VALKYRIE</td><td class="funds">₭ 720,000</td><td class="status-cell" style="color:var(--text3);">◌ Scheduled</td></tr>
+      <tr class="budget-total-row"><td colspan="2">TOTAL AUTHORISED</td><td class="funds">₭ 4,099,700</td><td class="status-cell">ALL PROGRAMMES</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- SECTION 07 · ORG CHART -->
+<section class="section" id="orgchart">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2 class="section-title typewriter" data-text="AGENCY STRUCTURE">AGENCY STRUCTURE</h2>
+    <div class="section-line"></div>
+  </div>
+  <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:2rem;max-width:680px;">Horizon Aerospace operates under a civilian mandate chartered by the Republic of Retardia. The Safety Review Board operates independently of all flight operations chains of command.</p>
+
+  <div class="org-chart reveal">
+    <div class="org-level">
+      <div class="org-node top">
+        <div class="org-name">Kohen Westhoff</div>
+        <div class="org-role">CHIEF EXECUTIVE OFFICER</div>
+      </div>
+    </div>
+    <div class="org-connector"></div>
+    <div class="org-level" style="gap:2rem;">
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <div class="org-node">
+          <div class="org-name">Safety Review Board</div>
+          <div class="org-role">INDEPENDENT — VETO POWER</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <div class="org-node">
+          <div class="org-name">Director of Flight Ops</div>
+          <div class="org-role">FLIGHT OPERATIONS</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <div class="org-node">
+          <div class="org-name">Chief Engineer</div>
+          <div class="org-role">ENGINEERING</div>
+        </div>
+      </div>
+    </div>
+    <div class="org-connector"></div>
+    <div class="org-level" style="gap:10px;">
+      <div class="org-node" style="min-width:110px;"><div class="org-name" style="font-size:9px;">Mission Control</div><div class="org-role">CONTROLLERS</div></div>
+      <div class="org-node" style="min-width:110px;"><div class="org-name" style="font-size:9px;">Kerbonaut Corps</div><div class="org-role">FLIGHT CREW</div></div>
+      <div class="org-node" style="min-width:110px;"><div class="org-name" style="font-size:9px;">Structures</div><div class="org-role">ENGINEERING</div></div>
+      <div class="org-node" style="min-width:110px;"><div class="org-name" style="font-size:9px;">Propulsion</div><div class="org-role">ENGINEERING</div></div>
+      <div class="org-node" style="min-width:110px;"><div class="org-name" style="font-size:9px;">Avionics</div><div class="org-role">ENGINEERING</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 08 · CLASSIFIED -->
+<section class="section" id="classified">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2 class="section-title typewriter" data-text="CLASSIFIED OPERATIONS">CLASSIFIED OPERATIONS</h2>
+    <div class="section-line"></div>
+  </div>
+  <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:2rem;max-width:680px;">The following information is classified at the Director level. Hover over redacted text to reveal contents. Authorised personnel only.</p>
+
+  <div class="classified-block reveal">
+    <div class="classified-label">⬛ LEVEL 4 — DIRECTOR EYES ONLY</div>
+    <p style="font-size:13px;color:var(--text2);line-height:1.8;">
+      Following the ABLE-2 partial success, Director Westhoff authorised a <span class="redacted" onclick="this.classList.toggle('revealed')">classified sub-programme codenamed HOLLOW SPIRE to develop a prototype reusable first-stage booster in secret, with a target demo date of</span> <span class="redacted" onclick="this.classList.toggle('revealed')">Q2 2029, funded outside the main Valkyrie budget envelope</span>. The Safety Review Board <span class="redacted" onclick="this.classList.toggle('revealed')">has not been formally notified of this programme</span>.
+    </p>
+  </div>
+
+  <div class="classified-block reveal">
+    <div class="classified-label">⬛ LEVEL 3 — FLIGHT OPERATIONS RESTRICTED</div>
+    <p style="font-size:13px;color:var(--text2);line-height:1.8;">
+      Telemetry logs from EcoStrat-1's final orbit indicate the spacecraft did not simply lose power. Ground station records show <span class="redacted" onclick="this.classList.toggle('revealed')">a 14-second burst of encrypted data transmitted to an unknown receiver before the signal cut</span>. The incident has been <span class="redacted" onclick="this.classList.toggle('revealed')">classified and attributed to hardware failure in all public communications</span>. Investigation is ongoing.
+    </p>
+  </div>
+
+  <div class="classified-block reveal">
+    <div class="classified-label">⬛ LEVEL 2 — ENGINEERING RESTRICTED</div>
+    <p style="font-size:13px;color:var(--text2);line-height:1.8;">
+      EcoStrat-3's nuclear engines exceeded their rated thrust by <span class="redacted" onclick="this.classList.toggle('revealed')">approximately 340% during the ascent burn</span>. The anomaly lasted <span class="redacted" onclick="this.classList.toggle('revealed')">8.2 seconds and was not commanded by Mission Control</span>. The satellite reached its target orbit without incident. Engineers have <span class="redacted" onclick="this.classList.toggle('revealed')">no explanation for the event</span>.
+    </p>
+  </div>
+</section>
+
+<!-- SECTION 09 · CAREERS -->
+<section class="section" id="careers">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2 class="section-title typewriter" data-text="CAREERS AT HORIZON">CAREERS AT HORIZON</h2>
     <div class="section-line"></div>
   </div>
 
@@ -2515,6 +2590,41 @@
 </section>
 
 <!-- FOOTER -->
+
+<!-- MISSION MODAL -->
+<div id="missionModal" onclick="if(event.target===this)closeMissionModal()">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div>
+        <div class="modal-id" id="modalId">—</div>
+        <div class="modal-title" id="modalTitle">—</div>
+      </div>
+      <button class="modal-close" onclick="closeMissionModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-patch"><canvas id="patchCanvas" width="160" height="160"></canvas></div>
+      <div class="modal-field"><label>MISSION STATUS</label><p id="modalStatus">—</p></div>
+      <div class="modal-field"><label>DESCRIPTION</label><p id="modalDesc">—</p></div>
+      <div class="modal-field"><label>WAYPOINTS</label><div class="modal-chips" id="modalChips"></div></div>
+      <div class="modal-budget">
+        <div class="modal-budget-label">MISSION BUDGET</div>
+        <div class="modal-budget-val" id="modalBudget">—</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LAUNCH SEQUENCE OVERLAY -->
+<div id="launchOverlay">
+  <div id="launchMissionName">LOADING MISSION DATA</div>
+  <div id="launchCountNum">T</div>
+  <div id="launchRocketAnim">🚀</div>
+  <button id="launchSkip" onclick="endLaunch()">SKIP ✕</button>
+</div>
+
+<!-- KEYBOARD SHORTCUT TOAST -->
+<div id="kbToast"></div>
+
 <footer>
   <div class="footer-emblem">
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -2680,7 +2790,7 @@
   });
 
   // ── MISSION CLOCK (since Y2026 Day 1 = Jan 1 2026) ──
-  const agencyStart = new Date('2026-01-01T00:00:00Z');
+  const agencyStart = new Date('2026-05-24T00:00:00Z');
   function updateClock() {
     const now = new Date();
     const diff = Math.max(0, now - agencyStart);
@@ -2748,6 +2858,298 @@
     );
     window.location.href = 'mailto:kohanyodubya@gmail.com?subject=' + subject + '&body=' + body;
   }
+
+  // ── MISSION DATA ──
+const MISSION_DATA = {
+  "EcoStrat-0": { id:"EcoStrat-0", title:"EcoStrat-0 — First Crewed Spaceflight", desc:"Horizon's first crewed mission. Kerbonauts reached space and returned safely. All objectives met.", status:"✓ COMPLETE", chips:["CREWED", "KERBIN SPACE", "CREW SAFE"], budget:142000 },
+  "EcoStrat-1": { id:"EcoStrat-1", title:"EcoStrat-1 — Atmospheric Monitor", desc:"Repeated power failures on Kerbin's dark side. Officially retired. Data archived.", status:"◼ RETIRED", chips:["KERBIN ORBIT", "POWER FAILURE", "DATA ARCHIVED"], budget:87500 },
+  "EcoStrat-2": { id:"EcoStrat-2", title:"EcoStrat-2 — Surface Imaging", desc:"Polar orbit achieved. 30-day full-surface mapping campaign complete. All instruments nominal.", status:"✓ COMPLETE", chips:["KERBIN ORBIT", "POLAR", "MAPPING ACTIVE"], budget:94200 },
+  "EcoStrat-3": { id:"EcoStrat-3", title:"EcoStrat-3 — Advanced Atmospheric & Weather Monitor", desc:"First satellite to use nuclear engines to reach orbit. Full EcoStrat-1 replacement. All sensors nominal.", status:"✓ COMPLETE", chips:["KERBIN ORBIT", "NUCLEAR ENGINES", "FIRST OF ITS KIND"], budget:318000 },
+  "ABLE-1": { id:"ABLE-1", title:"ABLE-1 — Rocket Design Validation", desc:"Crewed by Jebediah Kerman and Greging Kerman. Full design profile flown. Landed outside KSC.", status:"✓ COMPLETE", chips:["CREW OF 2", "JEBEDIAH KERMAN", "GREGING KERMAN", "LANDED OUTSIDE KSC"], budget:203000 },
+  "ABLE-2": { id:"ABLE-2", title:"ABLE-2 — Reusable Rocket Feasibility Test", desc:"Confirmed reusability is achievable. Revealed Horizon lacks capability to implement safely. Under review.", status:"⚠ PARTIAL SUCCESS", chips:["UNCREWED", "REUSABILITY CONFIRMED", "CAPABILITY GAP"], budget:215000 },
+  "Valkyrie-1A": { id:"Valkyrie-1A", title:"Valkyrie-1A — Block I LV Test", desc:"Full ascent, stage separation, and reentry validated. Stack confirmed flight-worthy.", status:"✓ COMPLETE", chips:["UNCREWED", "SUBORBITAL", "LV VALIDATED"], budget:540000 },
+  "Valkyrie-1B": { id:"Valkyrie-1B", title:"Valkyrie-1B — Uncrewed CM Reentry Test", desc:"Heat shield validated at lunar-return velocity. Crew certification unlocked. Phase II initiated.", status:"✓ COMPLETE", chips:["UNCREWED", "KERBIN ORBIT", "HEAT SHIELD VALIDATED"], budget:480000 },
+  "Valkyrie-2A": { id:"Valkyrie-2A", title:"Valkyrie-2A — First Crewed Kerbin Orbital", desc:"Crew of two. 3-day orbital shakedown complete. CM systems confirmed nominal.", status:"✓ COMPLETE", chips:["CREW OF 2", "KERBIN ORBIT", "3-DAY MISSION", "CREW SAFE"], budget:620000 },
+  "Valkyrie-2B": { id:"Valkyrie-2B", title:"Valkyrie-2B — First Crewed Mun Orbital", desc:"Crew of two. 6-day Mun orbital mission. Reconnaissance of landing sites.", status:"◌ SCHEDULED", chips:["CREW OF 2", "MUN ORBIT", "6-DAY MISSION", "SITE RECON"], budget:680000 },
+  "Valkyrie-2C": { id:"Valkyrie-2C", title:"Valkyrie-2C — LM Undocking Trial", desc:"Crew of three. Full LM separation, descent burn, and re-docking rehearsal in Mun orbit. No landing.", status:"◌ SCHEDULED", chips:["CREW OF 3", "MUN ORBIT", "LM REHEARSAL", "NO LANDING"], budget:720000 },
+  "Valkyrie-3A": { id:"Valkyrie-3A", title:"Valkyrie-3A — First Crewed Mun Landing", desc:"Two Kerbonauts descend to Mun surface. One remains in orbit. Date TBD pending Phase II sign-off.", status:"◌ PENDING", chips:["CREW OF 3", "MUN SURFACE", "FIRST LANDING"], budget:900000 },
+  "Valkyrie-3B": { id:"Valkyrie-3B", title:"Valkyrie-3B — Extended EVA & Sample Return", desc:"Extended surface stay. Multiple EVAs, geological sampling, and sample return to Kerbin.", status:"◌ PENDING", chips:["CREW OF 3", "MUN SURFACE", "EXTENDED EVA", "SAMPLE RETURN"], budget:950000 },
+};
+
+  // ── METEOR SHOWER ──
+  function spawnMeteor() {
+    const c = document.getElementById('starCanvas');
+    if (!c) return;
+    const cx = c.getContext('2d');
+    const startX = Math.random() * c.width;
+    const startY = Math.random() * (c.height * 0.4);
+    const len = 80 + Math.random() * 120;
+    const angle = 0.7 + Math.random() * 0.3;
+    const dx = Math.cos(angle) * len;
+    const dy = Math.sin(angle) * len;
+    let t = 0;
+    function draw() {
+      t += 0.06;
+      if (t > 1) return;
+      cx.save();
+      cx.beginPath();
+      cx.moveTo(startX + dx * t, startY + dy * t);
+      cx.lineTo(startX + dx * Math.max(0, t - 0.25), startY + dy * Math.max(0, t - 0.25));
+      cx.strokeStyle = `rgba(255,255,255,${(1 - t) * 0.9})`;
+      cx.lineWidth = 1.5;
+      cx.stroke();
+      cx.restore();
+      requestAnimationFrame(draw);
+    }
+    draw();
+  }
+  function scheduleMeteor() {
+    const delay = 4000 + Math.random() * 10000;
+    setTimeout(() => {
+      spawnMeteor();
+      if (Math.random() < 0.3) setTimeout(spawnMeteor, 150);
+      scheduleMeteor();
+    }, delay);
+  }
+  scheduleMeteor();
+
+  // ── MISSION PATCH GENERATOR ──
+  function drawPatch(canvas, missionId) {
+    const ctx = canvas.getContext('2d');
+    const w = canvas.width, h = canvas.height, cx = w/2, cy = h/2, r = w/2 - 4;
+    ctx.clearRect(0, 0, w, h);
+
+    // Seed color from mission id
+    let hash = 0;
+    for (let c of missionId) hash = (hash * 31 + c.charCodeAt(0)) & 0xFFFFFFFF;
+    const hue = Math.abs(hash % 360);
+    const hue2 = (hue + 120) % 360;
+
+    // Background circle
+    const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+    grd.addColorStop(0, `hsl(${hue},60%,15%)`);
+    grd.addColorStop(1, `hsl(${hue2},80%,8%)`);
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2);
+    ctx.fillStyle = grd; ctx.fill();
+
+    // Outer ring
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2);
+    ctx.strokeStyle = `hsl(${hue},80%,55%)`; ctx.lineWidth = 3; ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx, cy, r-6, 0, Math.PI*2);
+    ctx.strokeStyle = `hsl(${hue},40%,30%)`; ctx.lineWidth = 1; ctx.stroke();
+
+    // Stars ring
+    for (let i=0; i<8; i++) {
+      const a = (i/8)*Math.PI*2;
+      const sx = cx + Math.cos(a)*(r-14);
+      const sy = cy + Math.sin(a)*(r-14);
+      ctx.beginPath(); ctx.arc(sx, sy, 2, 0, Math.PI*2);
+      ctx.fillStyle = `hsl(50,100%,75%)`; ctx.fill();
+    }
+
+    // Central icon (simple rocket shape)
+    ctx.save(); ctx.translate(cx, cy);
+    ctx.fillStyle = `hsl(${hue},70%,65%)`;
+    ctx.beginPath();
+    ctx.moveTo(0, -28); ctx.lineTo(10, 10); ctx.lineTo(-10, 10); ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = `hsl(${hue2},60%,50%)`;
+    ctx.beginPath();
+    ctx.moveTo(-10,10); ctx.lineTo(-16,20); ctx.lineTo(-4,14); ctx.closePath(); ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(10,10); ctx.lineTo(16,20); ctx.lineTo(4,14); ctx.closePath(); ctx.fill();
+    ctx.restore();
+
+    // Mission ID text
+    ctx.fillStyle = `hsl(50,100%,80%)`;
+    ctx.font = `bold 11px "Orbitron", monospace`;
+    ctx.textAlign = 'center';
+    ctx.fillText(missionId.toUpperCase(), cx, cy + 38);
+
+    // Inner glow
+    const glow = ctx.createRadialGradient(cx, cy-10, 0, cx, cy, r*0.6);
+    glow.addColorStop(0, `hsla(${hue},80%,70%,0.15)`);
+    glow.addColorStop(1, 'transparent');
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2);
+    ctx.fillStyle = glow; ctx.fill();
+  }
+
+  // ── MISSION MODAL ──
+  function openMissionModal(missionId) {
+    const data = MISSION_DATA[missionId];
+    if (!data) return;
+    playBeep(440, 0.05);
+    document.getElementById('modalId').textContent = data.id;
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalStatus').textContent = data.status;
+    document.getElementById('modalDesc').textContent = data.desc;
+    document.getElementById('modalBudget').textContent = '₭ ' + data.budget.toLocaleString() + 'k RRC';
+    const chips = document.getElementById('modalChips');
+    chips.innerHTML = data.chips.map(c =>
+      `<span class="waypoint" style="background:rgba(74,158,255,0.07);color:var(--blue);border:1px solid rgba(74,158,255,0.2);">${c}</span>`
+    ).join('');
+    const pc = document.getElementById('patchCanvas');
+    drawPatch(pc, missionId);
+    document.getElementById('missionModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMissionModal() {
+    document.getElementById('missionModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Wire up mission rows
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.mission-row').forEach(row => {
+      const titleEl = row.querySelector('.mission-title');
+      if (!titleEl) return;
+      const text = titleEl.textContent.trim();
+      // Match mission id from text
+      const match = text.match(/^(EcoStrat-[0-3]|ABLE-[12]|Valkyrie-[123][ABC]?)/);
+      if (!match) return;
+      const mid = match[1];
+      if (!MISSION_DATA[mid]) return;
+      row.style.cursor = 'pointer';
+      row.title = 'Click for mission briefing';
+      row.addEventListener('click', () => {
+        const status = row.querySelector('.mission-status');
+        if (status && status.textContent.includes('COMPLETE')) {
+          triggerLaunch(mid);
+        } else {
+          openMissionModal(mid);
+        }
+      });
+    });
+  });
+
+  // ── LAUNCH SEQUENCE ──
+  function triggerLaunch(missionId) {
+    const overlay = document.getElementById('launchOverlay');
+    const numEl = document.getElementById('launchCountNum');
+    const nameEl = document.getElementById('launchMissionName');
+    const rocketEl = document.getElementById('launchRocketAnim');
+    const data = MISSION_DATA[missionId];
+    nameEl.textContent = (data ? data.id + ' — ' + data.title.split('—')[1]?.trim() : missionId).toUpperCase();
+    rocketEl.classList.remove('liftoff');
+    rocketEl.style.opacity = '1';
+    overlay.classList.add('open');
+    const counts = ['T-3','T-2','T-1','LIFTOFF'];
+    let i = 0;
+    function step() {
+      if (i >= counts.length) {
+        rocketEl.classList.add('liftoff');
+        setTimeout(() => {
+          openMissionModal(missionId);
+          endLaunch();
+        }, 2200);
+        return;
+      }
+      numEl.style.animation = 'none';
+      numEl.offsetHeight; // reflow
+      numEl.style.animation = 'count-pulse 1s ease-in-out';
+      numEl.textContent = counts[i];
+      playBeep(i === 3 ? 880 : 440, 0.08);
+      i++;
+      if (i <= counts.length) setTimeout(step, 1100);
+    }
+    step();
+  }
+
+  function endLaunch() {
+    document.getElementById('launchOverlay').classList.remove('open');
+    document.getElementById('launchRocketAnim').classList.remove('liftoff');
+  }
+
+  // ── SOUND EFFECTS ──
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  let audioCtx;
+  function getAudioCtx() {
+    if (!audioCtx) audioCtx = new AudioCtx();
+    return audioCtx;
+  }
+  function playBeep(freq, vol, dur) {
+    try {
+      const ac = getAudioCtx();
+      const o = ac.createOscillator();
+      const g = ac.createGain();
+      o.connect(g); g.connect(ac.destination);
+      o.frequency.value = freq || 600;
+      g.gain.setValueAtTime(vol || 0.04, ac.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + (dur || 0.12));
+      o.start(); o.stop(ac.currentTime + (dur || 0.12));
+    } catch(e) {}
+  }
+  function playClick() { playBeep(800, 0.03, 0.06); }
+
+  // Attach click sound to nav links, buttons, job cards
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('nav a, .job-card, .ctrl-btn, .theme-btn, .submit-btn').forEach(el => {
+      el.addEventListener('click', playClick);
+    });
+  });
+
+  // ── TYPEWRITER EFFECT ──
+  const twObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const text = el.dataset.text || el.textContent;
+      el.textContent = '';
+      el.classList.add('typewriter');
+      let i = 0;
+      function type() {
+        if (i < text.length) {
+          el.textContent += text[i++];
+          setTimeout(type, 38);
+        } else {
+          el.classList.add('typed');
+        }
+      }
+      setTimeout(type, 200);
+      twObs.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.section-title.typewriter').forEach(el => twObs.observe(el));
+  });
+
+  // ── KEYBOARD SHORTCUTS ──
+  const KB_SHORTCUTS = {
+    'n': '#news', 'm': '#missions', 'v': '#values',
+    'r': '#roadmap', 'k': '#kerbonauts', 'b': '#budget',
+    'o': '#orgchart', 'c': '#classified', 'j': '#careers'
+  };
+  const KB_LABELS = {
+    'n':'NEWS','m':'MISSIONS','v':'VALUES','r':'ROADMAP',
+    'k':'KERBONAUTS','b':'BUDGET','o':'ORG CHART','c':'CLASSIFIED','j':'CAREERS'
+  };
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('kbToast');
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 1800);
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+    if (e.key === '?') {
+      const keys = Object.entries(KB_LABELS).map(([k,v]) => `[${k.toUpperCase()}] ${v}`).join('  ');
+      showToast(keys);
+      return;
+    }
+    if (e.key === 'Escape') { closeMissionModal(); endLaunch(); return; }
+    const target = KB_SHORTCUTS[e.key.toLowerCase()];
+    if (target) {
+      e.preventDefault();
+      document.querySelector(target)?.scrollIntoView({ behavior:'smooth' });
+      showToast('→ ' + KB_LABELS[e.key.toLowerCase()]);
+      playClick();
+    }
+  });
+
 </script>
 </body>
 </html>
